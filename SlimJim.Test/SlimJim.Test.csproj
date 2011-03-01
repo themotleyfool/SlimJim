@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="FullDirectoryGeneration\GeneratesBlankSolutionFileForEmptyDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleSlnFiles\SampleSlnFileHelper.cs" />
+    <Compile Include="SolutionGeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +65,10 @@
       <Project>{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}</Project>
       <Name>SlimJim</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SampleSlnFiles\BlankSolution.sln" />
+    <Content Include="SampleSlnFiles\SingleProject.sln" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,21 +1,24 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 
 namespace SlimJim
 {
 	public class SolutionFileGenerator
 	{
-		private string rootDirectory;
+		private readonly ICsProjRegistry csProjRegistry;
 
-		public SolutionFileGenerator(string rootDirectory)
+		public SolutionFileGenerator(ICsProjRegistry csProjRegistry)
 		{
-			this.rootDirectory = rootDirectory;
+			this.csProjRegistry = csProjRegistry;
 		}
 
-		public FileInfo GenerateSolutionFile()
+		public SolutionFileInfo GenerateSolutionFile(string rootDirectory, string slnFilePath)
 		{
-			string slnFileName = Path.GetDirectoryName(rootDirectory) + ".sln";
-			string slnFilePath = Path.Combine(rootDirectory, slnFileName);
-			return new FileInfo(slnFilePath);
+			List<CsProj> projects = csProjRegistry.LookupCsProjsFromDirectory(rootDirectory);
+			var solutionFile = new SolutionFileInfo(slnFilePath, "")
+			                   	{
+			                   		CsProjs = new List<CsProj>(projects)
+			                   	};
+			return solutionFile;
 		}
 	}
 }
