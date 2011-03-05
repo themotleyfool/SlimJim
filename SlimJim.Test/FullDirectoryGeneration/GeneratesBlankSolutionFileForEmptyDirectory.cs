@@ -1,6 +1,4 @@
-﻿using System.IO;
-using SlimJim;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace SlimJim.Test.FullDirectoryGeneration
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SlimJim.Test.SampleSlnFiles;
 
 namespace SlimJim.Test
 {
@@ -23,13 +22,13 @@ namespace SlimJim.Test
 			csProjRegistry = MockRepository.GenerateStrictMock<ICsProjRegistry>();
 			generator = new SolutionFileGenerator(csProjRegistry);
 			 
-			proj = new CsProj { Name = "MyProj", Path = @"C:\TestFolder\MyProj\MyProj.csproj", Guid="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" };
+			proj = new CsProj { AssemblyName = "MyProj", Path = @"C:\TestFolder\MyProj\MyProj.csproj", Guid="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" };
 			projWithProjRef = new CsProj
 			                     	{
-			                     		Name = "MyProj.Test", 
+			                     		AssemblyName = "MyProj.Test", 
 												Path = @"C:\TestFolder\MyProj.Test\MyProj.Test.csproj",
 												Guid = "{07FC660C-0A00-4F39-B07A-8BEF9505C7D9}",
-												ProjectReferenceGuids = new List<string> { "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" }
+												ReferencedAssemblyNames = new List<string> { "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" }
 			                     	};
 		}
 
