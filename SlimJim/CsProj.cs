@@ -5,11 +5,10 @@ namespace SlimJim
 {
 	public class CsProj
 	{
-		public string Path { get; set; }
-		public string Name { get; set; }
-
 		public string Guid { get; set; }
-
-		public List<string> ProjectReferenceGuids { get; set; }
+		public string Path { get; set; }
+		public string AssemblyName { get; set; }
+		public List<string> ReferencedAssemblyNames { get; set; }
+		public List<string> ReferencedProjectGuids { get; set; }
 	}
 }
