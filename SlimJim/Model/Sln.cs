@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SlimJim
+namespace SlimJim.Model
 {
 	public class Sln
 	{

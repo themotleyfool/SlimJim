@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SlimJim.Model;
 
-namespace SlimJim
+namespace SlimJim.Infrastructure
 {
 	public class SolutionFileInfo
 	{

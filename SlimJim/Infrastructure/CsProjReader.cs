@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using SlimJim.Model;
 
-namespace SlimJim
+namespace SlimJim.Infrastructure
 {
 	public class CsProjReader
 	{

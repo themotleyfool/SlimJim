@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SlimJim.Infrastructure;
+using SlimJim.Model;
 
 namespace SlimJim.Test
 {

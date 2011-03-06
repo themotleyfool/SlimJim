@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using SlimJim.Infrastructure;
+using SlimJim.Model;
 
 namespace SlimJim.Test
 {
