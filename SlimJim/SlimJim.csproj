@@ -44,9 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CsProj.cs" />
+    <Compile Include="CsProjReader.cs" />
     <Compile Include="ICsProjRegistry.cs" />
     <Compile Include="SlimJimMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sln.cs" />
+    <Compile Include="SlnGenerator.cs" />
     <Compile Include="SolutionFileGenerator.cs" />
     <Compile Include="SolutionFileInfo.cs" />
   </ItemGroup>
