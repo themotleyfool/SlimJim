@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using SlimJim.Model;
 
-namespace SlimJim.Test
+namespace SlimJim.Test.Model
 {
 	[TestFixture]
 	public class SlnGeneratorTests

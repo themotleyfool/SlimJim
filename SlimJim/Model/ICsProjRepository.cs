@@ -2,7 +2,7 @@
 
 namespace SlimJim.Model
 {
-	public interface ICsProjRegistry
+	public interface ICsProjRepository
 	{
 		List<CsProj> LookupCsProjsFromDirectory(string rootDirectory);
 	}

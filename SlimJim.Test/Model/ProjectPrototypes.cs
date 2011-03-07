@@ -1,7 +1,7 @@
 using System;
 using SlimJim.Model;
 
-namespace SlimJim.Test
+namespace SlimJim.Test.Model
 {
 	public class ProjectPrototypes
 	{

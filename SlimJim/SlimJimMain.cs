@@ -1,8 +1,8 @@
 ﻿namespace SlimJim
 {
-	class SlimJimMain
+	public class SlimJimMain
 	{
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 		}
 	}
