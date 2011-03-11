@@ -43,6 +43,22 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(project.ReferencedAssemblyNames, Contains.Item("NHibernate"));
 		}
 
+		[Test]
+		public void NoProjectReferencesDoesNotCauseNRE()
+		{
+			CsProj project = GetProject("NoProjectReferences");
+
+			Assert.That(project.ReferencedProjectGuids, Is.Empty);
+		}
+
+		[Test]
+		public void NoAssemblyName_ReturnsNull()
+		{
+			CsProj project = GetProject("BreaksThings");
+
+			Assert.That(project, Is.Null);
+		}
+
 		private CsProj GetProject(string fileName)
 		{
 			file = SampleFiles.SampleFileHelper.GetCsProjFile(fileName);

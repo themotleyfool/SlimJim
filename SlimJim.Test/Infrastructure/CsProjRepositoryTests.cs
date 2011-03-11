@@ -12,23 +12,50 @@ namespace SlimJim.Test.Infrastructure
 	public class CsProjRepositoryTests
 	{
 		private const string StartPath = @"C:\Projects";
+		private readonly FileInfo file1 = SampleFileHelper.GetCsProjFile("Simple");
+		private readonly FileInfo file2 = SampleFileHelper.GetCsProjFile("Simple");
+		private readonly CsProj proj1 = new CsProj {AssemblyName = "Proj1"};
+		private readonly CsProj proj2 = new CsProj {AssemblyName = "Proj1"};
+		private ProjectFileFinder finder;
+		private CsProjReader reader;
+		private CsProjRepository repository;
 
-		[Test, Ignore]
+		[SetUp]
+		public void BeforeEach()
+		{
+			finder = MockRepository.GenerateStrictMock<ProjectFileFinder>();
+			reader = MockRepository.GenerateStrictMock<CsProjReader>();
+			repository = new CsProjRepository
+			{
+				Finder = finder,
+				Reader = reader
+			};
+		}
+
+		[Test]
 		public void GetsFilesFromFinderAndProcessesThemWithCsProjReader()
 		{
-			FileInfo file1 = SampleFileHelper.GetCsProjFile("Simple");
-			FileInfo file2 = SampleFileHelper.GetCsProjFile("Simple");
-			var finder = MockRepository.GenerateStrictMock<ProjectFileFinder>();
-			var reader = MockRepository.GenerateStrictMock<CsProjReader>();
-			var repository = new CsProjRepository();
-			
 			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>{file1, file2});
-			var proj1 = new CsProj {AssemblyName = "Proj1"};
-			var proj2 = new CsProj {AssemblyName = "Proj1"};
+
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(proj2);
 
-			//List<CsProj> projects = 
+			List<CsProj> projects = repository.LookupCsProjsFromDirectory(StartPath);
+
+			Assert.That(projects, Is.EqualTo(new[]{proj1, proj2}));
+		}
+
+		[Test]
+		public void GracefullyHandlesNullsFromReader()
+		{
+			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo> { file1, file2 });
+
+			reader.Expect(r => r.Read(file1)).Return(proj1);
+			reader.Expect(r => r.Read(file2)).Return(null);
+
+			List<CsProj> projects = repository.LookupCsProjsFromDirectory(StartPath);
+
+			Assert.That(projects, Is.EqualTo(new[] { proj1 }));
 		}
 	}
 }

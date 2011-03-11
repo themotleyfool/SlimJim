@@ -71,6 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SampleFiles\CsProj\BreaksThings.csproj" />
+    <Content Include="SampleFiles\CsProj\NoProjectReferences.csproj" />
     <Content Include="SampleFiles\CsProj\FQAssemblyName.csproj">
       <SubType>Designer</SubType>
     </Content>

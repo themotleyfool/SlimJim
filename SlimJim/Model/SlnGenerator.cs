@@ -13,7 +13,7 @@ namespace SlimJim.Model
 			generatedSln = new Sln();
 		}
 
-		public Sln GeneratePartialGraphSln(string rootAssemblyName)
+		public virtual Sln GeneratePartialGraphSln(string rootAssemblyName)
 		{
 			generatedSln.Name = rootAssemblyName;
 

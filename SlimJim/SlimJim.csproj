@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure\CsProjRepository.cs" />
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />
+    <Compile Include="Infrastructure\SlnFileWriter.cs" />
     <Compile Include="Model\CsProj.cs" />
     <Compile Include="Infrastructure\CsProjReader.cs" />
     <Compile Include="Model\ICsProjRepository.cs" />

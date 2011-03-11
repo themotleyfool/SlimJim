@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -10,19 +11,28 @@ namespace SlimJim.Infrastructure
 	{
 		private static readonly XNamespace Ns = "http://schemas.microsoft.com/developer/msbuild/2003";
 
-		public CsProj Read(FileInfo csProjFile)
+		public virtual CsProj Read(FileInfo csProjFile)
 		{
-			var csProj = new CsProj
-			             	{
-			             		Path = csProjFile.FullName
-			             	};
+			CsProj csProj = null;
 
 			XElement xml = LoadXml(csProjFile);
 			XElement properties = xml.Element(Ns + "PropertyGroup");
-			csProj.Guid = properties.Element(Ns + "ProjectGuid").Value;
-			csProj.AssemblyName = properties.Element(Ns + "AssemblyName").Value;	
-			csProj.ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml);
-			csProj.ReferencedProjectGuids = ReadReferencedProjectGuids(xml);
+			XElement assemblyName = properties.Element(Ns + "AssemblyName");
+			if (assemblyName != null)
+			{
+				csProj = new CsProj
+					{
+						Path = csProjFile.FullName,
+						AssemblyName = assemblyName.Value,
+						Guid = properties.Element(Ns + "ProjectGuid").Value,
+						ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml),
+						ReferencedProjectGuids = ReadReferencedProjectGuids(xml)
+					};
+			}
+			else
+			{
+				Console.WriteLine("Failed to read project file " + csProjFile.Name);
+			}
 
 			return csProj;
 		}
@@ -40,8 +50,8 @@ namespace SlimJim.Infrastructure
 		private List<string> ReadReferencedAssemblyNames(XElement xml)
 		{
 			List<string> rawAssemblyNames = (from r in xml.DescendantsAndSelf(Ns + "Reference")
-			                                 select r.Attribute("Include").Value).ToList();
-			List<string> unQualifiedAssemblyNames = rawAssemblyNames.ConvertAll(n => UnQualify(n));
+														select r.Attribute("Include").Value).ToList();
+			List<string> unQualifiedAssemblyNames = rawAssemblyNames.ConvertAll(UnQualify);
 			return unQualifiedAssemblyNames;
 		}
 
@@ -55,7 +65,7 @@ namespace SlimJim.Infrastructure
 		private List<string> ReadReferencedProjectGuids(XElement xml)
 		{
 			return (from pr in xml.DescendantsAndSelf(Ns + "ProjectReference")
-			        select pr.Element(Ns + "Project").Value).ToList();
+					  select pr.Element(Ns + "Project").Value).ToList();
 		}
 	}
 }

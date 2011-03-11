@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Rebuild" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FEF439F-2D20-4AAD-8359-EF52BC8CF007}</ProjectGuid>
+    <WixProject>True</WixProject>
+    <OutputName>TMF ElectroMailer 5000 Service</OutputName>
+    <OutputType>Package</OutputType>
+    <DeploymentType>WindowsInstaller</DeploymentType>
+    <EnableServiceFlag Condition="$(EnableElectroMailer5000Service)==True">1</EnableServiceFlag>
+    <EnableServiceFlag Condition="$(EnableElectroMailer5000Service)!=True">0</EnableServiceFlag>
+    <MsiExtraArguments>ENABLEEM5KSERVICE=$(EnableServiceFlag)</MsiExtraArguments>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+  <ItemGroup>
+    <Generate Include="installer.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fool.Apps.Email.ElectroMailer5000.Service\Fool.Apps.Email.ElectroMailer5000.Service.csproj">
+      <Project>{885F39C3-B03A-460C-8F79-42D97009199F}</Project>
+      <Name>Fool.Apps.Email.ElectroMailer5000.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\The Motley Fool\Fool.Build\Fool.Common.targets" />
+</Project>

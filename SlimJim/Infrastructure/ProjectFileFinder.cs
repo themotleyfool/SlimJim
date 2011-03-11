@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SlimJim.Infrastructure
@@ -12,7 +13,7 @@ namespace SlimJim.Infrastructure
 			ignorePaths = new List<string>();
 		}
 
-		public List<FileInfo> FindAllProjectFiles(string startPath)
+		public virtual List<FileInfo> FindAllProjectFiles(string startPath)
 		{
 			var root = new DirectoryInfo(startPath);
 
@@ -31,6 +32,7 @@ namespace SlimJim.Infrastructure
 				if (projects.Length > 0)
 				{
 					files.Add(projects[0]);
+					Console.WriteLine("Found project " + projects[0].Name);
 				}
 				else
 				{
@@ -49,7 +51,7 @@ namespace SlimJim.Infrastructure
 			return ignorePaths.Contains(directory.Name.ToLower());
 		}
 
-		public void IgnorePaths(params string[] paths)
+		public virtual void IgnorePaths(params string[] paths)
 		{
 			var lowerCasedPaths = new List<string>(paths).ConvertAll(p => p.ToLower());
 			ignorePaths.AddRange(lowerCasedPaths);
