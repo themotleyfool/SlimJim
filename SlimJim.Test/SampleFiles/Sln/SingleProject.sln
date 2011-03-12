@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monopoly", "Monopoly\Monopoly.csproj", "{E75347BE-2125-4325-818D-0ECC760F11BA}"
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "C:\Projects\MyProject\MyProject.csproj", "{E75347BE-2125-4325-818D-0ECC760F11BA}"
 EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -85,6 +85,7 @@
     <Content Include="SampleFiles\SampleFileSystem\Theirs\TheirProject2\TheirProject2.csproj" />
     <Content Include="SampleFiles\SampleFileSystem\Theirs\TheirProject3\TheirProject3.csproj" />
     <Content Include="SampleFiles\Sln\ManyProjects.sln" />
+    <Content Include="SampleFiles\Sln\ThreeProjects.sln" />
     <Content Include="SampleFiles\Sln\BlankSolution.sln" />
     <Content Include="SampleFiles\Sln\SingleProject.sln" />
   </ItemGroup>

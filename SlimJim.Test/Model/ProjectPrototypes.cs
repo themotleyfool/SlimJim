@@ -8,28 +8,28 @@ namespace SlimJim.Test.Model
 		public readonly CsProj TheirProject3 = new CsProj
 			{
 				AssemblyName = "TheirProject3",
-				Guid = Guid.NewGuid().ToString("N"),
+				Guid = "{499372E5-5DBF-4DB4-BB1A-9072395C9017}",
 				Path = @"C:\Projects\TheirProject3\TheirProject3.csproj"
 			};
 
 		public readonly CsProj TheirProject2 = new CsProj
 			{
 				AssemblyName = "TheirProject2",
-				Guid = Guid.NewGuid().ToString("N"),
+				Guid = "{58E0EE99-9DCA-45C4-AB04-48D67316F71D}",
 				Path = @"C:\Projects\TheirProject2\TheirProject2.csproj"
 			};
 
 		public readonly CsProj TheirProject1 = new CsProj
 			{
 				AssemblyName = "TheirProject1",
-				Guid = Guid.NewGuid().ToString("N"),
+				Guid = "{74CBCCEE-C805-49C3-9EB8-10B48CCC3A6F}",
 				Path = @"C:\Projects\TheirProject1\TheirProject1.csproj"
 			};
 
 		public readonly CsProj MyProject = new CsProj
 			{
 				AssemblyName = "MyProject",
-				Guid = Guid.NewGuid().ToString("N"),
+				Guid = "{E75347BE-2125-4325-818D-0ECC760F11BA}",
 				Path = @"C:\Projects\MyProject\MyProject.csproj"
 			};
 
@@ -50,14 +50,14 @@ namespace SlimJim.Test.Model
 		public CsProj OurProject1 = new CsProj
 		{
 			AssemblyName = "OurProject1",
-			Guid = Guid.NewGuid().ToString("N"),
+			Guid = "{021CD387-7FE9-4BAD-B57F-6D8ABFE73562}",
 			Path = @"C:\Projects\OurProject1\OurProject1.csproj"
 		};
 
 		public CsProj OurProject2 = new CsProj
 		{
 			AssemblyName = "OurProject2",
-			Guid = Guid.NewGuid().ToString("N"),
+			Guid = "{4A0CC937-5131-4B9F-AD9E-D6844BDD8EC3}",
 			Path = @"C:\Projects\OurProject2\OurProject2.csproj"
 		};
 	}

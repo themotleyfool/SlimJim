@@ -19,6 +19,7 @@ namespace SlimJim.Infrastructure
 			string templatesPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates/");
 			var templateGroup = new StringTemplateGroup("SlnTemplates", templatesPath);
 			StringTemplate slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
+			slnTemplate.SetAttribute("sln", solution);
 			return Environment.NewLine + slnTemplate + Environment.NewLine;
 		}
 	}
