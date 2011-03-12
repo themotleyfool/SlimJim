@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.StringTemplate, Version=3.3.0.7239, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Lib\DotNet\StringTemplate\Antlr3.StringTemplate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure\CsProjRepository.cs" />
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />
+    <Compile Include="Infrastructure\SlnFileRenderer.cs" />
     <Compile Include="Infrastructure\SlnFileWriter.cs" />
     <Compile Include="Model\CsProj.cs" />
     <Compile Include="Infrastructure\CsProjReader.cs" />
@@ -54,6 +59,12 @@
     <Compile Include="Model\Sln.cs" />
     <Compile Include="Model\SlnGenerator.cs" />
     <Compile Include="SlnFileGenerator.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Templates\SolutionTemplate.st">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

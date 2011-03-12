@@ -55,6 +55,7 @@
     <Compile Include="Infrastructure\CsProjReaderTests.cs" />
     <Compile Include="Infrastructure\CsProjRepositoryTests.cs" />
     <Compile Include="Infrastructure\ProjectFileFinderTests.cs" />
+    <Compile Include="Infrastructure\SlnFileRendererTests.cs" />
     <Compile Include="Model\ProjectPrototypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleFiles\SampleFileHelper.cs" />
@@ -83,6 +84,7 @@
     <Content Include="SampleFiles\SampleFileSystem\Theirs\TheirProject1\TheirProject1.csproj" />
     <Content Include="SampleFiles\SampleFileSystem\Theirs\TheirProject2\TheirProject2.csproj" />
     <Content Include="SampleFiles\SampleFileSystem\Theirs\TheirProject3\TheirProject3.csproj" />
+    <Content Include="SampleFiles\Sln\ManyProjects.sln" />
     <Content Include="SampleFiles\Sln\BlankSolution.sln" />
     <Content Include="SampleFiles\Sln\SingleProject.sln" />
   </ItemGroup>
