@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+﻿using System.IO;
 using SlimJim.Model;
 
 namespace SlimJim.Infrastructure
@@ -10,10 +7,11 @@ namespace SlimJim.Infrastructure
 	{
 		public virtual void WriteSlnFile(Sln solution, string writeInDirectory)
 		{
-			using (var writer = XmlWriter.Create(GetOutputFilePath(writeInDirectory, solution)))
+			using (var writer = new StreamWriter(GetOutputFilePath(writeInDirectory, solution)))
 			{
-				var serializer = new XmlSerializer(typeof (Sln));
-				serializer.Serialize(writer, solution);
+				var renderer = new SlnFileRenderer(solution);
+				string fileContents = renderer.Render();
+				writer.Write(fileContents);
 			}
 		}
 

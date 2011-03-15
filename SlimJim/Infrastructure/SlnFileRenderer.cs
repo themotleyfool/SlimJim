@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using SlimJim.Model;
 using Antlr3.ST;
 
@@ -16,7 +17,7 @@ namespace SlimJim.Infrastructure
 
 		public string Render()
 		{
-			string templatesPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates/");
+			string templatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\");
 			var templateGroup = new StringTemplateGroup("SlnTemplates", templatesPath);
 			StringTemplate slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
 			slnTemplate.SetAttribute("sln", solution);

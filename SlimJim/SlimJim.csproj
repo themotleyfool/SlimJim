@@ -57,7 +57,7 @@
     <Compile Include="SlimJimMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Sln.cs" />
-    <Compile Include="Model\SlnGenerator.cs" />
+    <Compile Include="Model\SlnBuilder.cs" />
     <Compile Include="SlnFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup />

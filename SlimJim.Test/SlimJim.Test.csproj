@@ -59,7 +59,7 @@
     <Compile Include="Model\ProjectPrototypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleFiles\SampleFileHelper.cs" />
-    <Compile Include="Model\SlnGeneratorTests.cs" />
+    <Compile Include="Model\SlnBuilderTests.cs" />
     <Compile Include="SlnFileGeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,15 +8,7 @@ namespace SlimJim
 		public static void Main(string[] args)
 		{
 			string rootProjectName = args[0];
-			var fileGenerator = new SlnFileGenerator
-				{
-					ProjectRepository = new CsProjRepository
-						{
-							Finder = new ProjectFileFinder(),
-							Reader = new CsProjReader()
-						},
-					SlnWriter = new SlnFileWriter()
-				};
+			var fileGenerator = new SlnFileGenerator();
 
 			fileGenerator.GeneratePartialGraphSolutionFile(Directory.GetCurrentDirectory(), rootProjectName);
 		}

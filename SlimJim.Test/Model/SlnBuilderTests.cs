@@ -5,7 +5,7 @@ using SlimJim.Model;
 namespace SlimJim.Test.Model
 {
 	[TestFixture]
-	public class SlnGeneratorTests
+	public class SlnBuilderTests
 	{
 		private string rootProjectName;
 		private Sln solution;
@@ -59,7 +59,7 @@ namespace SlimJim.Test.Model
 		{
 			projects.MyProject.ReferencesAssemblies(projects.TheirProject1);
 			GeneratePartialGraphSolution(rootProjectName, projects.MyProject, projects.TheirProject1);
-			Assert.That(solution.Projects, Is.EqualTo(new[] {projects.MyProject, projects.TheirProject1}));
+			Assert.That(solution.Projects, Is.EqualTo(new[] {projects.MyProject}));
 		}
 
 		[Test]
@@ -74,7 +74,7 @@ namespace SlimJim.Test.Model
 		{
 			projects.MyProject.ReferencesAssemblies(projects.TheirProject1);
 			GeneratePartialGraphSolution(rootProjectName, projects.MyProject, projects.TheirProject1, projects.Unrelated1);
-			Assert.That(solution.Projects, Is.EqualTo(new[] { projects.MyProject, projects.TheirProject1 }));
+			Assert.That(solution.Projects, Is.EqualTo(new[] { projects.MyProject }));
 		}
 
 		[Test]
@@ -88,7 +88,7 @@ namespace SlimJim.Test.Model
 				});
 			Assert.That(solution.Projects, Is.EqualTo(new[]
 				{
-					projects.MyProject, projects.TheirProject1, projects.TheirProject2, projects.TheirProject3
+					projects.MyProject
 				}));
 		}
 
@@ -153,7 +153,7 @@ namespace SlimJim.Test.Model
 				});
 			Assert.That(solution.Projects, Is.EqualTo(new[]
 				{
-					projects.MyProject, projects.OurProject1, projects.Unrelated1, projects.Unrelated2
+					projects.MyProject, projects.OurProject1
 				}));
 		}
 
@@ -167,6 +167,7 @@ namespace SlimJim.Test.Model
 			projects.MyProject.ReferencesAssemblies(projects.TheirProject1, projects.TheirProject2);
 			projects.MyProject.ReferencesProjects(projects.TheirProject3);
 			projects.TheirProject3.ReferencesAssemblies(projects.Unrelated1);
+			projects.TheirProject3.ReferencesProjects(projects.Unrelated2);
 			GeneratePartialGraphSolution(rootProjectName, new[]
 				{
 					projects.MyProject, projects.TheirProject1, projects.TheirProject2, projects.TheirProject3,
@@ -174,15 +175,15 @@ namespace SlimJim.Test.Model
 				});
 			Assert.That(solution.Projects, Is.EqualTo(new[]
 				{
-					projects.MyProject, projects.TheirProject1, projects.TheirProject2, projects.TheirProject3,
-					projects.Unrelated1, projects.OurProject1, projects.OurProject2
+					projects.MyProject, projects.TheirProject3, projects.Unrelated2,
+					projects.OurProject1, projects.TheirProject1, projects.OurProject2
 				}));
 		}
 
 		private void GeneratePartialGraphSolution(string rootProjectName, params CsProj[] projectsList)
 		{
-			var generator = new SlnGenerator(new List<CsProj>(projectsList));
-			solution = generator.GeneratePartialGraphSln(rootProjectName);
+			var generator = new SlnBuilder(new List<CsProj>(projectsList));
+			solution = generator.BuildPartialGraphSln(rootProjectName);
 		}
 	}
 }

@@ -33,10 +33,17 @@ namespace SlimJim.Test.Infrastructure
 		}
 
 		[Test]
+		public void CreatesOwnInstancesOfFinderAndReader()
+		{
+			repository = new CsProjRepository();
+			Assert.That(repository.Finder, Is.Not.Null, "Should have created instance of CsProjFinder.");
+			Assert.That(repository.Reader, Is.Not.Null, "Should have created instance of CsProjReader.");
+		}
+
+		[Test]
 		public void GetsFilesFromFinderAndProcessesThemWithCsProjReader()
 		{
 			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>{file1, file2});
-
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(proj2);
 
@@ -49,7 +56,6 @@ namespace SlimJim.Test.Infrastructure
 		public void GracefullyHandlesNullsFromReader()
 		{
 			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo> { file1, file2 });
-
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(null);
 

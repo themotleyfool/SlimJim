@@ -2,26 +2,26 @@
 
 namespace SlimJim.Model
 {
-	public class SlnGenerator
+	public class SlnBuilder
 	{
 		private readonly List<CsProj> projectsList;
-		private readonly Sln generatedSln;
+		private readonly Sln builtSln;
 
-		public SlnGenerator(List<CsProj> projectsList)
+		public SlnBuilder(List<CsProj> projectsList)
 		{
 			this.projectsList = projectsList;
-			generatedSln = new Sln();
+			builtSln = new Sln();
 		}
 
-		public virtual Sln GeneratePartialGraphSln(string rootAssemblyName)
+		public virtual Sln BuildPartialGraphSln(string rootAssemblyName)
 		{
-			generatedSln.Name = rootAssemblyName;
+			builtSln.Name = rootAssemblyName;
 
 			CsProj rootProject = AddAssemblySubtree(rootAssemblyName);
 
 			AddAfferentReferencesToProject(rootProject);
 
-			return generatedSln;
+			return builtSln;
 		}
 
 		private void AddAfferentReferencesToProject(CsProj project)
@@ -68,12 +68,7 @@ namespace SlimJim.Model
 		{
 			if (project != null)
 			{
-				generatedSln.AddProject(project);
-
-				foreach (string referencedAssemblyName in project.ReferencedAssemblyNames)
-				{
-					AddAssemblySubtree(referencedAssemblyName);
-				}
+				builtSln.AddProject(project);
 
 				foreach (string projectGuid in project.ReferencedProjectGuids)
 				{
