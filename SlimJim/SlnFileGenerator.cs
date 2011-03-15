@@ -15,11 +15,11 @@ namespace SlimJim
 			SlnWriter = new SlnFileWriter();
 		}
 
-		public void GeneratePartialGraphSolutionFile(string directory, string rootProjectName)
+		public void GenerateSolutionFile(SlnGenerationOptions options)
 		{
-			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(directory);
-			Sln solution = new SlnBuilder(projects).BuildPartialGraphSln(rootProjectName);
-			SlnWriter.WriteSlnFile(solution, directory);
+			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options.ProjectsRootDirectory);
+			Sln solution = new SlnBuilder(projects).BuildPartialGraphSln(options.TargetProjectName);
+			SlnWriter.WriteSlnFile(solution, options.ProjectsRootDirectory);
 		}
 	}
 }

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\ArgsOptionsBuilderTests.cs" />
     <Compile Include="Infrastructure\CsProjReaderTests.cs" />
     <Compile Include="Infrastructure\CsProjRepositoryTests.cs" />
     <Compile Include="Infrastructure\ProjectFileFinderTests.cs" />

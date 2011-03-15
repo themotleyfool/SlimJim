@@ -7,10 +7,10 @@ namespace SlimJim
 	{
 		public static void Main(string[] args)
 		{
-			string rootProjectName = args[0];
 			var fileGenerator = new SlnFileGenerator();
-
-			fileGenerator.GeneratePartialGraphSolutionFile(Directory.GetCurrentDirectory(), rootProjectName);
+			var options = ArgsOptionsBuilder.BuildOptions(args, Directory.GetCurrentDirectory());
+			
+			fileGenerator.GenerateSolutionFile(options);
 		}
 	}
 }

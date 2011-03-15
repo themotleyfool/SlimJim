@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -12,8 +13,21 @@ namespace SlimJim.Test
 		private SlnFileGenerator gen;
 		private SlnFileWriter slnWriter;
 		private CsProjRepository repo;
-		private const string StartPath = @"C:\Projects";
-		private const string RootProjectName = "MyProject";
+		private const string ProjectsDir = @"C:\Projects";
+		private const string TargetProject = "MyProject";
+
+		[SetUp]
+		public void BeforeEach()
+		{
+			repo = MockRepository.GenerateStrictMock<CsProjRepository>();
+			slnWriter = MockRepository.GenerateStrictMock<SlnFileWriter>();
+
+			gen = new SlnFileGenerator()
+			{
+				ProjectRepository = repo,
+				SlnWriter = slnWriter
+			};
+		}
 
 		[Test]
 		public void CreatesOwnInstancesOfRepositoryAndWriter()
@@ -26,20 +40,21 @@ namespace SlimJim.Test
 		[Test]
 		public void GeneratesSlnFileForCurrentDirectory()
 		{
-			repo = MockRepository.GenerateStrictMock<CsProjRepository>();
-			slnWriter = MockRepository.GenerateStrictMock<SlnFileWriter>();
-			gen = new SlnFileGenerator()
-				{
-					ProjectRepository = repo,
-					SlnWriter = slnWriter
-				};
-
 			var projs = new List<CsProj>();
-			repo.Expect(r => r.LookupCsProjsFromDirectory(StartPath)).Return(projs);
-			slnWriter.Expect(wr => wr.WriteSlnFile(Arg<Sln>.Matches(s => s.Name.Equals(RootProjectName)), Arg.Is(StartPath)));
+			repo.Expect(r => r.LookupCsProjsFromDirectory(ProjectsDir)).Return(projs);
+			slnWriter.Expect(wr => wr.WriteSlnFile(Arg<Sln>.Matches(s => s.Name.Equals(TargetProject)), Arg.Is(ProjectsDir)));
 
-			gen.GeneratePartialGraphSolutionFile(StartPath, RootProjectName);
+			var options = new SlnGenerationOptions
+				{
+					ProjectsRootDirectory = ProjectsDir,
+					TargetProjectName = TargetProject
+				};
+			gen.GenerateSolutionFile(options);
+		}
 
+		[TearDown]
+		public void AfterEach()
+		{
 			repo.VerifyAllExpectations();
 			slnWriter.VerifyAllExpectations();
 		}
