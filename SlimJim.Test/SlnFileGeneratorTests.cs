@@ -10,23 +10,31 @@ namespace SlimJim.Test
 	[TestFixture]
 	public class SlnFileGeneratorTests
 	{
+		private const string ProjectsDir = @"C:\Projects";
+		private const string TargetProject = "MyProject";
 		private SlnFileGenerator gen;
 		private SlnFileWriter slnWriter;
 		private CsProjRepository repo;
-		private const string ProjectsDir = @"C:\Projects";
-		private const string TargetProject = "MyProject";
+		private SlnBuilder slnBuilder;
+		private SlnGenerationOptions options;
+		private readonly List<CsProj> projects = new List<CsProj>();
+		private readonly Sln createdSlnObject = new Sln();
 
 		[SetUp]
 		public void BeforeEach()
 		{
 			repo = MockRepository.GenerateStrictMock<CsProjRepository>();
 			slnWriter = MockRepository.GenerateStrictMock<SlnFileWriter>();
+			slnBuilder = MockRepository.GenerateStrictMock<SlnBuilder>(new List<CsProj>());
 
 			gen = new SlnFileGenerator()
 			{
 				ProjectRepository = repo,
 				SlnWriter = slnWriter
 			};
+
+			SlnBuilder.OverrideDefaultBuilder(slnBuilder);
+			options = new SlnGenerationOptions { ProjectsRootDirectory = ProjectsDir };
 		}
 
 		[Test]
@@ -38,17 +46,14 @@ namespace SlimJim.Test
 		}
 
 		[Test]
-		public void GeneratesSlnFileForCurrentDirectory()
+		public void GeneratesSlnFileForGivenOptions()
 		{
-			var projs = new List<CsProj>();
-			repo.Expect(r => r.LookupCsProjsFromDirectory(ProjectsDir)).Return(projs);
-			slnWriter.Expect(wr => wr.WriteSlnFile(Arg<Sln>.Matches(s => s.Name.Equals(TargetProject)), Arg.Is(ProjectsDir)));
+			options.TargetProjectNames.Add(TargetProject);
 
-			var options = new SlnGenerationOptions
-				{
-					ProjectsRootDirectory = ProjectsDir,
-					TargetProjectName = TargetProject
-				};
+			repo.Expect(r => r.LookupCsProjsFromDirectory(ProjectsDir)).Return(projects);
+			slnBuilder.Expect(bld => bld.BuildPartialGraphSln(options)).Return(createdSlnObject);
+			slnWriter.Expect(wr => wr.WriteSlnFile(createdSlnObject, ProjectsDir));
+
 			gen.GenerateSolutionFile(options);
 		}
 
@@ -57,6 +62,7 @@ namespace SlimJim.Test
 		{
 			repo.VerifyAllExpectations();
 			slnWriter.VerifyAllExpectations();
+			slnBuilder.VerifyAllExpectations();
 		}
 	}
 }

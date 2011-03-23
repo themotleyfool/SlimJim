@@ -1,4 +1,7 @@
-﻿namespace SlimJim.Infrastructure
+﻿using System;
+using SlimJim.Model;
+
+namespace SlimJim.Infrastructure
 {
 	public class ArgsOptionsBuilder
 	{
@@ -28,7 +31,7 @@
 			{
 				if (!arg.StartsWith("/"))
 				{
-					options.TargetProjectName = arg;
+					options.TargetProjectNames.Add(arg);
 				}
 				else
 				{
@@ -47,8 +50,9 @@
 				case "d":
 					options.ProjectsRootDirectory = value;
 					break;
+				case "t":
 				case "p":
-					options.TargetProjectName = value;
+					options.TargetProjectNames.Add(value);
 					break;
 				case "a":
 					options.AdditionalSearchPaths.Add(value);
@@ -56,7 +60,24 @@
 				case "o":
 					options.SlnOutputPath = value;
 					break;
+				case "v":
+					options.VisualStudioVersion = TryParseVersionNumber(value);
+					break;
+				case "n":
+					options.SolutionName = value;
+					break;
 			}
+		}
+
+		private VisualStudioVersion TryParseVersionNumber(string versionNumber)
+		{
+			VisualStudioVersion parsedVersion;
+			if (!Enum.TryParse("_" + versionNumber, out parsedVersion))
+			{
+				parsedVersion = VisualStudioVersion._90;
+			}
+
+			return parsedVersion;
 		}
 	}
 }

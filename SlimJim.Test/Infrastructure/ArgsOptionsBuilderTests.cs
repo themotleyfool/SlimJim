@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
+using SlimJim.Model;
 
 namespace SlimJim.Test.Infrastructure
 {
@@ -16,9 +21,8 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new[] {TargetProject}, WorkingDirectory);
 
 			Assert.That(options.ProjectsRootDirectory, Is.EqualTo(WorkingDirectory));
-			Assert.That(options.TargetProjectName, Is.EqualTo(TargetProject));
-			Assert.That(options.Mode, Is.EqualTo(SlnGenerationMode.Partial));
-
+			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] {TargetProject}));
+			Assert.That(options.Mode, Is.EqualTo(SlnGenerationMode.PartialGraph));
 		}
 
 		[Test]
@@ -27,8 +31,8 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new string[0], WorkingDirectory);
 
 			Assert.That(options.ProjectsRootDirectory, Is.EqualTo(WorkingDirectory));
-			Assert.That(options.TargetProjectName, Is.Null);
-			Assert.That(options.Mode, Is.EqualTo(SlnGenerationMode.Full));
+			Assert.That(options.TargetProjectNames, Is.Empty);
+			Assert.That(options.Mode, Is.EqualTo(SlnGenerationMode.FullGraph));
 			Assert.That(options.AdditionalSearchPaths, Is.Empty);
 		}
 
@@ -45,7 +49,15 @@ namespace SlimJim.Test.Infrastructure
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/p:MyProject" }, WorkingDirectory);
 
-			Assert.That(options.TargetProjectName, Is.EqualTo("MyProject"));
+			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] {"MyProject"}));
+		}
+
+		[Test]
+		public void SpecifiedMultipleTargetProjects()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/p:MyProject", "/p:YourProject"}, WorkingDirectory);
+
+			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] {"MyProject", "YourProject"}));
 		}
 
 		[Test]
@@ -62,6 +74,89 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/o:C:\MyProjects\Sln" }, WorkingDirectory);
 
 			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\MyProjects\Sln"));
+		}
+
+		[Test]
+		public void SpecifiedVisualStudioVersion90()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/v:90"}, WorkingDirectory);
+
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._90));
+		}
+
+		[Test]
+		public void SpecifiedVisualStudioVersion10()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/v:100" }, WorkingDirectory);
+
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._100));
+		}
+
+		[Test]
+		public void InvalidVisualStudioVersionNumber()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/v:dumb"}, WorkingDirectory);
+
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._90));
+		}
+
+		[Test]
+		public void SpecifiedSolutionName()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/n:MyProjects"}, WorkingDirectory);
+
+			Assert.That(options.SolutionName, Is.EqualTo("MyProjects"));
+		}
+
+		[Test]
+		public void UnspecifiedSolutionNameWithSingleTargetProject()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/p:MyProject"}, WorkingDirectory);
+
+			Assert.That(options.SolutionName, Is.EqualTo("MyProject"));
+		}
+
+		[Test] 
+		public void UnspecifiedSolutionNameWithMultipleTargetProjectsUsesFirstProjectNamePlusSuffix()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/p:MyProject", @"/p:YourProject" }, WorkingDirectory);
+
+			Assert.That(options.SolutionName, Is.StringMatching("MyProject.+"));
+		}
+
+		[Test]
+		public void UnspecifiedSolutionNameWithNoTargetProjectsUsesFolderName()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new string[] {}, WorkingDirectory);
+			Assert.That(options.SolutionName, Is.EqualTo("WorkingDir"));
+
+			options = ArgsOptionsBuilder.BuildOptions(new string[] { }, @"R:\Code\Projects\CSharp\SlumJim");
+			Assert.That(options.SolutionName, Is.EqualTo("SlumJim"));
+			
+			options = ArgsOptionsBuilder.BuildOptions(new string[] { }, @"R:\Code\Projects\CSharp\SlumJim\");
+			Assert.That(options.SolutionName, Is.EqualTo("SlumJim"));
+
+			options = ArgsOptionsBuilder.BuildOptions(new string[] { }, @"R:\");
+			Assert.That(options.SolutionName, Is.EqualTo("R"));
+
+			options = ArgsOptionsBuilder.BuildOptions(new string[] { }, @"\");
+			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
+		}
+
+		[Test]
+		public void NoSolutionNameNoTargetProjectsNoWorkingDirUsesDefaultName()
+		{
+			options = new SlnGenerationOptions();
+
+			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
+		}
+
+		[Test]
+		public void TPrefixAlsoSetsTargetProject()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/t:MyProject" }, WorkingDirectory);
+
+			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] {"MyProject"}));
 		}
 	}
 }

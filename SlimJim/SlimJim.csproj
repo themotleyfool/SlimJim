@@ -52,11 +52,12 @@
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />
     <Compile Include="Infrastructure\SlnFileRenderer.cs" />
     <Compile Include="Infrastructure\SlnFileWriter.cs" />
-    <Compile Include="Infrastructure\SlnGenerationMode.cs" />
+    <Compile Include="Model\SlnGenerationMode.cs" />
     <Compile Include="Model\CsProj.cs" />
     <Compile Include="Infrastructure\CsProjReader.cs" />
     <Compile Include="Model\ICsProjRepository.cs" />
-    <Compile Include="Infrastructure\SlnGenerationOptions.cs" />
+    <Compile Include="Model\SlnGenerationOptions.cs" />
+    <Compile Include="Model\VisualStudioVersion.cs" />
     <Compile Include="SlimJimMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Sln.cs" />

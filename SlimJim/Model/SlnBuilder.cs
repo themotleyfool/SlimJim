@@ -6,6 +6,7 @@ namespace SlimJim.Model
 	{
 		private readonly List<CsProj> projectsList;
 		private readonly Sln builtSln;
+		private static SlnBuilder overriddenBuilder;
 
 		public SlnBuilder(List<CsProj> projectsList)
 		{
@@ -13,13 +14,16 @@ namespace SlimJim.Model
 			builtSln = new Sln();
 		}
 
-		public virtual Sln BuildPartialGraphSln(string rootAssemblyName)
+		public virtual Sln BuildPartialGraphSln(SlnGenerationOptions options)
 		{
-			builtSln.Name = rootAssemblyName;
+			builtSln.Name = options.SolutionName;
 
-			CsProj rootProject = AddAssemblySubtree(rootAssemblyName);
+			foreach (string targetProjectName in options.TargetProjectNames)
+			{
+				CsProj rootProject = AddAssemblySubtree(targetProjectName);
 
-			AddAfferentReferencesToProject(rootProject);
+				AddAfferentReferencesToProject(rootProject);
+			}
 
 			return builtSln;
 		}
@@ -85,6 +89,16 @@ namespace SlimJim.Model
 		private CsProj FindProjectByAssemblyName(string assemblyName)
 		{
 			return projectsList.Find(csp => csp.AssemblyName == assemblyName);
+		}
+
+		public static SlnBuilder GetSlnBuilder(List<CsProj> projects)
+		{
+			return overriddenBuilder ?? new SlnBuilder(projects);
+		}
+
+		public static void OverrideDefaultBuilder(SlnBuilder slnBuilder)
+		{
+			overriddenBuilder = slnBuilder;
 		}
 	}
 }
