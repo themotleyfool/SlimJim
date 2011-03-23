@@ -8,7 +8,7 @@ Current features:
 * Create solution file for working directory or specified projects root directory with either a specified or default name.
 
 Upcoming features:
-* .slim file in your projects root directory can contain details for generation of one or more solution files.
+* .slim file in your projects root directory can contain details for generation of one or more solution files. This will allow for simple invocation, e.g. "C:\MyProjects>slimjim".
 * Support for VS 2008
 * Specify folder to contain generated solution files instead of projects root.
 * Generate solution file for entire project graph.
