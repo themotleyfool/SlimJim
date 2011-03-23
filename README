@@ -1,4 +1,4 @@
-SlimJim is a Visual Studio solution file generator. Currently it is a work in progress.
+SlimJim is a Visual Studio solution file generator.
 
 Current features:
 * Create solution files for VS 2010.
