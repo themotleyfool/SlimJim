@@ -11,12 +11,14 @@ namespace SlimJim.Test.Model
 		private string rootProjectName;
 		private Sln solution;
 		private ProjectPrototypes projects;
+		private SlnGenerationOptions options;
 
 		[SetUp]
 		public void BeforeEach()
 		{
 			projects = new ProjectPrototypes();
 			rootProjectName = projects.MyProject.AssemblyName;
+			options = new SlnGenerationOptions(@"C:\Projects");
 		}
 
 		[Test]
@@ -24,6 +26,14 @@ namespace SlimJim.Test.Model
 		{
 			GeneratePartialGraphSolution(new[] { rootProjectName });
 			Assert.That(solution.Name, Is.EqualTo(rootProjectName));
+		}
+
+		[Test]
+		public void SlnVersionEqualToVersionFromOptions()
+		{
+			options.VisualStudioVersion = VisualStudioVersion.VS2008;
+			GeneratePartialGraphSolution(new string[0]);
+			Assert.That(solution.Version, Is.EqualTo(VisualStudioVersion.VS2008));
 		}
 
 		[Test]
@@ -202,7 +212,6 @@ namespace SlimJim.Test.Model
 		private void GeneratePartialGraphSolution(string[] targetProjectNames, params CsProj[] projectsList)
 		{
 			var generator = new SlnBuilder(new List<CsProj>(projectsList));
-			var options = new SlnGenerationOptions();
 			Array.ForEach(targetProjectNames, n => options.TargetProjectNames.Add(n));
 			solution = generator.BuildPartialGraphSln(options);
 		}

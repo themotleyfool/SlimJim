@@ -17,9 +17,9 @@ namespace SlimJim
 
 		public void GenerateSolutionFile(SlnGenerationOptions options)
 		{
-			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options.ProjectsRootDirectory);
+			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildPartialGraphSln(options);
-			SlnWriter.WriteSlnFile(solution, options.ProjectsRootDirectory);
+			SlnWriter.WriteSlnFile(solution, options.SlnOutputPath);
 		}
 	}
 }

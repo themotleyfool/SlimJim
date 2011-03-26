@@ -5,18 +5,20 @@ namespace SlimJim.Model
 	public class SlnBuilder
 	{
 		private readonly List<CsProj> projectsList;
-		private readonly Sln builtSln;
+		private Sln builtSln;
 		private static SlnBuilder overriddenBuilder;
 
 		public SlnBuilder(List<CsProj> projectsList)
 		{
 			this.projectsList = projectsList;
-			builtSln = new Sln();
 		}
 
 		public virtual Sln BuildPartialGraphSln(SlnGenerationOptions options)
 		{
-			builtSln.Name = options.SolutionName;
+			builtSln = new Sln(options.SolutionName)
+				{
+					Version = options.VisualStudioVersion
+				};
 
 			foreach (string targetProjectName in options.TargetProjectNames)
 			{
@@ -72,7 +74,7 @@ namespace SlimJim.Model
 		{
 			if (project != null)
 			{
-				builtSln.AddProject(project);
+				builtSln.AddProjects(project);
 
 				foreach (string projectGuid in project.ReferencedProjectGuids)
 				{

@@ -12,6 +12,8 @@ namespace SlimJim.Test.Infrastructure
 	public class CsProjRepositoryTests
 	{
 		private const string StartPath = @"C:\Projects";
+		private const string SearchPath1 = @"C:\OtherProjects";
+		private const string SearchPath2 = @"C:\MoreProjects";
 		private readonly FileInfo file1 = SampleFileHelper.GetCsProjFile("Simple");
 		private readonly FileInfo file2 = SampleFileHelper.GetCsProjFile("Simple");
 		private readonly CsProj proj1 = new CsProj {AssemblyName = "Proj1"};
@@ -19,10 +21,12 @@ namespace SlimJim.Test.Infrastructure
 		private ProjectFileFinder finder;
 		private CsProjReader reader;
 		private CsProjRepository repository;
+		private SlnGenerationOptions options;
 
 		[SetUp]
 		public void BeforeEach()
 		{
+			options = new SlnGenerationOptions(StartPath);
 			finder = MockRepository.GenerateStrictMock<ProjectFileFinder>();
 			reader = MockRepository.GenerateStrictMock<CsProjReader>();
 			repository = new CsProjRepository
@@ -30,6 +34,13 @@ namespace SlimJim.Test.Infrastructure
 				Finder = finder,
 				Reader = reader
 			};
+		}
+
+		[TearDown]
+		public void AfterEach()
+		{
+			finder.VerifyAllExpectations();
+			reader.VerifyAllExpectations();
 		}
 
 		[Test]
@@ -47,7 +58,7 @@ namespace SlimJim.Test.Infrastructure
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(proj2);
 
-			List<CsProj> projects = repository.LookupCsProjsFromDirectory(StartPath);
+			List<CsProj> projects = repository.LookupCsProjsFromDirectory(options);
 
 			Assert.That(projects, Is.EqualTo(new[]{proj1, proj2}));
 		}
@@ -59,9 +70,20 @@ namespace SlimJim.Test.Infrastructure
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(null);
 
-			List<CsProj> projects = repository.LookupCsProjsFromDirectory(StartPath);
+			List<CsProj> projects = repository.LookupCsProjsFromDirectory(options);
 
 			Assert.That(projects, Is.EqualTo(new[] { proj1 }));
+		}
+
+		[Test]
+		public void ReadsFilesFromAdditionalSearchPathsAsWell()
+		{
+			options.AdditionalSearchPaths.AddRange(new[] {SearchPath1, SearchPath2});
+			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>());
+			finder.Expect(f => f.FindAllProjectFiles(SearchPath1)).Return(new List<FileInfo>());
+			finder.Expect(f => f.FindAllProjectFiles(SearchPath2)).Return(new List<FileInfo>());
+
+			List<CsProj> projects = repository.LookupCsProjsFromDirectory(options);
 		}
 	}
 }

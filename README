@@ -1,15 +1,18 @@
 SlimJim is a Visual Studio solution file generator.
 
 Current features:
-* Create solution files for VS 2010.
+* Create solution files for VS 2010 and 2008.
 * Create solution file for one or more target projects in a file tree beneath a specfic root directory. Solution will contain:
 ** All projects that reference one or more of the target projects either by assembly or project reference and recursively each project refereced by those projects by project reference.
 ** All projects that the target projects reference by project reference and recursively each project refereced by those projects by project reference.
 * Create solution file for working directory or specified projects root directory with either a specified or default name.
+* Specify folder to contain generated solution files instead of projects root.
+* Specifiy addition search paths outside of your project root to search for additional projects.
 
 Upcoming features:
 * .slim file in your projects root directory can contain details for generation of one or more solution files. This will allow for simple invocation, e.g. "C:\MyProjects>slimjim".
-* Support for VS 2008
-* Specify folder to contain generated solution files instead of projects root.
 * Generate solution file for entire project graph.
-* Specifiy addition search paths outside of your project root to search for additional projects.
+
+Known issues: 
+* If SlnOutputPath does not exist, an exception is raised.
+* All paths must be absolute. Relative paths for additional search paths, projects root, and solution output path will be supported soon.

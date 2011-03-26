@@ -8,18 +8,26 @@ namespace SlimJim.Model
 	{
 		private const string DefaultSolutionName = "SlimJim";
 		private string solutionName;
+		private string slnOutputPath;
 
-		public SlnGenerationOptions()
+		public SlnGenerationOptions(string workingDirectory)
 		{
+			ProjectsRootDirectory = workingDirectory;
 			AdditionalSearchPaths = new List<string>();
 			TargetProjectNames = new List<string>();
+			VisualStudioVersion = VisualStudioVersion.VS2010;
 		}
 
 		public string ProjectsRootDirectory { get; set; }
 		public List<string> AdditionalSearchPaths { get; private set; }
-		public string SlnOutputPath { get; set; }
 		public ICollection<string> TargetProjectNames { get; private set; }
 		public VisualStudioVersion VisualStudioVersion { get; set; }
+
+		public string SlnOutputPath
+		{
+			get { return slnOutputPath ?? ProjectsRootDirectory; }
+			set { slnOutputPath = value; }
+		}
 
 		public string SolutionName
 		{

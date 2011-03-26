@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Model;
@@ -53,24 +52,29 @@ namespace SlimJim.Test.Infrastructure
 			TestRender();
 		}
 
+		[Test]
+		public void VisualStudio2008Solution()
+		{
+			MakeSolution("VS2008");
+			solution.Version = VisualStudioVersion.VS2008;
+
+			TestRender();
+		}
+
 		private void MakeSolution(string name, params CsProj[] csProjs)
 		{
-			solution = new Sln
-				{
-					Name = name,
-					Guid = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
-					Projects = new List<CsProj>(csProjs)
-				};
+			solution = new Sln(name, "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
+			solution.AddProjects(csProjs);
 		}
 
 		private void TestRender()
 		{
 			renderer = new SlnFileRenderer(solution);
 
-			string slnContents = renderer.Render();
-			string expected = SampleFileHelper.GetSlnFileContents(solution.Name);
+			string actualContents = renderer.Render();
+			string expectedContents = SampleFileHelper.GetSlnFileContents(solution.Name);
 
-			Assert.That(slnContents, Is.EqualTo(expected));
+			Assert.That(actualContents, Is.EqualTo(expectedContents));
 		}
 	}
 }

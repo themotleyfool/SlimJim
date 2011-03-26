@@ -18,7 +18,7 @@ namespace SlimJim.Test
 		private SlnBuilder slnBuilder;
 		private SlnGenerationOptions options;
 		private readonly List<CsProj> projects = new List<CsProj>();
-		private readonly Sln createdSlnObject = new Sln();
+		private readonly Sln createdSlnObject = new Sln("Sln");
 
 		[SetUp]
 		public void BeforeEach()
@@ -34,7 +34,7 @@ namespace SlimJim.Test
 			};
 
 			SlnBuilder.OverrideDefaultBuilder(slnBuilder);
-			options = new SlnGenerationOptions { ProjectsRootDirectory = ProjectsDir };
+			options = new SlnGenerationOptions(ProjectsDir);
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace SlimJim.Test
 		{
 			options.TargetProjectNames.Add(TargetProject);
 
-			repo.Expect(r => r.LookupCsProjsFromDirectory(ProjectsDir)).Return(projects);
+			repo.Expect(r => r.LookupCsProjsFromDirectory(options)).Return(projects);
 			slnBuilder.Expect(bld => bld.BuildPartialGraphSln(options)).Return(createdSlnObject);
 			slnWriter.Expect(wr => wr.WriteSlnFile(createdSlnObject, ProjectsDir));
 

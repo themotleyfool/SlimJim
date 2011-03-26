@@ -64,7 +64,6 @@
     <Compile Include="Model\SlnBuilder.cs" />
     <Compile Include="SlnFileGenerator.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Templates\SolutionTemplate.st">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

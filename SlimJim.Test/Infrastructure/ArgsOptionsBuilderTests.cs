@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Model;
@@ -79,17 +75,17 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void SpecifiedVisualStudioVersion90()
 		{
-			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/v:90"}, WorkingDirectory);
+			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/v:VS2008"}, WorkingDirectory);
 
-			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._90));
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2008));
 		}
 
 		[Test]
 		public void SpecifiedVisualStudioVersion10()
 		{
-			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/v:100" }, WorkingDirectory);
+			options = ArgsOptionsBuilder.BuildOptions(new[] { @"/v:VS2010" }, WorkingDirectory);
 
-			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._100));
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2010));
 		}
 
 		[Test]
@@ -97,7 +93,7 @@ namespace SlimJim.Test.Infrastructure
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] {@"/v:dumb"}, WorkingDirectory);
 
-			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion._90));
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2010));
 		}
 
 		[Test]
@@ -140,14 +136,6 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(options.SolutionName, Is.EqualTo("R"));
 
 			options = ArgsOptionsBuilder.BuildOptions(new string[] { }, @"\");
-			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
-		}
-
-		[Test]
-		public void NoSolutionNameNoTargetProjectsNoWorkingDirUsesDefaultName()
-		{
-			options = new SlnGenerationOptions();
-
 			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
 		}
 

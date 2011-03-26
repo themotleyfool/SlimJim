@@ -15,10 +15,7 @@ namespace SlimJim.Infrastructure
 
 		private SlnGenerationOptions Build(string[] args, string workingDirectory)
 		{
-			options = new SlnGenerationOptions
-				{
-					ProjectsRootDirectory = workingDirectory
-				};
+			options = new SlnGenerationOptions(workingDirectory);
 
 			ProcessSwitches(args);
 
@@ -71,10 +68,11 @@ namespace SlimJim.Infrastructure
 
 		private VisualStudioVersion TryParseVersionNumber(string versionNumber)
 		{
-			VisualStudioVersion parsedVersion;
-			if (!Enum.TryParse("_" + versionNumber, out parsedVersion))
+			VisualStudioVersion parsedVersion = VisualStudioVersion.ParseVersionString(versionNumber);
+
+			if (parsedVersion == null)
 			{
-				parsedVersion = VisualStudioVersion._90;
+				parsedVersion = VisualStudioVersion.VS2010;
 			}
 
 			return parsedVersion;

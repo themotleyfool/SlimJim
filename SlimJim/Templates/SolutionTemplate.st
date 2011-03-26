@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version $sln.Version.SlnFileVersionNumber$
+# Visual Studio $sln.Version.Year$
 
 $sln.Projects:{ p | Project("$sln.Guid$") = "$p.AssemblyName$", "$p.Path$", "$p.Guid$"
 EndProject};separator="\r\n"$

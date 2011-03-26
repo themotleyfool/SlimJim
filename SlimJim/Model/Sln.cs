@@ -4,21 +4,32 @@ namespace SlimJim.Model
 {
 	public class Sln
 	{
-		public Sln()
+		public Sln(string name)
+			:this(name, System.Guid.NewGuid().ToString("N"))
 		{
-			Projects = new List<CsProj>();
-			Guid = System.Guid.NewGuid().ToString("N");
 		}
 
-		public string Name { get; set; }
-		public string Guid { get; set; }
-		public List<CsProj> Projects { get; set; }
-
-		public void AddProject(CsProj csProj)
+		public Sln(string name, string guid)
 		{
-			if (!Projects.Contains(csProj))
+			Name = name;
+			Guid = guid;
+			Projects = new List<CsProj>();
+			Version = VisualStudioVersion.VS2010;
+		}
+
+		public string Name { get; private set; }
+		public string Guid { get; private set; }
+		public VisualStudioVersion Version { get; set; }
+		public List<CsProj> Projects { get; private set; }
+
+		public void AddProjects(params CsProj[] csProjs)
+		{
+			foreach (CsProj proj in csProjs)
 			{
-				Projects.Add(csProj);
+				if (!Projects.Contains(proj))
+				{
+					Projects.Add(proj);
+				}
 			}
 		}
 	}
