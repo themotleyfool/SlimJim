@@ -4,10 +4,10 @@ SlimJim
 SlimJim is a Visual Studio solution file generator.
 
 SlimJim is meant to be invoked from the command line. It will search a given folder (recursively) for .csproj files, and include them in a new solution file if:
-1 The name mathes one of the target project files.
-2 The project has a dependency on one or more of the target project files.
-3 One of the target project files has a dependency on it.
-4 Any project to be included in the solution has a project reference to it. 
+1. The name mathes one of the target project files.
+2. The project has a dependency on one or more of the target project files.
+3. One of the target project files has a dependency on it.
+4. Any project to be included in the solution has a project reference to it. 
 
 Invocation
 ----------
