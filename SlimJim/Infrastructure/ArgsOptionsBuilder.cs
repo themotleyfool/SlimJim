@@ -44,6 +44,7 @@ namespace SlimJim.Infrastructure
 
 			switch (command)
 			{
+				case "r":
 				case "d":
 					options.ProjectsRootDirectory = value;
 					break;
