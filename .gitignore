@@ -1,3 +1,5 @@
+Debug/
+Release/
 bin/
 obj/
 packages/
@@ -11,3 +13,5 @@ packages/
 *.vssscc
 *~
 Data
+*.exe
+*.msi
