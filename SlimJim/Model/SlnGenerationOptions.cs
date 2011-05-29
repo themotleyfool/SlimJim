@@ -10,7 +10,7 @@ namespace SlimJim.Model
 		private string solutionName;
 		private string slnOutputPath;
 
-		public SlnGenerationOptions(string workingDirectory)
+	    public SlnGenerationOptions(string workingDirectory)
 		{
 			ProjectsRootDirectory = workingDirectory;
 			AdditionalSearchPaths = new List<string>();
@@ -18,18 +18,19 @@ namespace SlimJim.Model
 			VisualStudioVersion = VisualStudioVersion.VS2010;
 		}
 
-		public string ProjectsRootDirectory { get; set; }
-		public List<string> AdditionalSearchPaths { get; private set; }
-		public ICollection<string> TargetProjectNames { get; private set; }
-		public VisualStudioVersion VisualStudioVersion { get; set; }
+	    public string ProjectsRootDirectory { get; set; }
+	    public List<string> AdditionalSearchPaths { get; private set; }
+	    public ICollection<string> TargetProjectNames { get; private set; }
+	    public VisualStudioVersion VisualStudioVersion { get; set; }
+	    public bool IncludeEfferentAssemblyReferences { get; set; }
 
-		public string SlnOutputPath
+	    public string SlnOutputPath
 		{
 			get { return slnOutputPath ?? ProjectsRootDirectory; }
 			set { slnOutputPath = value; }
 		}
 
-		public string SolutionName
+	    public string SolutionName
 		{
 			get
 			{
@@ -42,7 +43,7 @@ namespace SlimJim.Model
 					
 					if (TargetProjectNames.Count > 1)
 					{
-						return TargetProjectNames.First() + "AndFriends";
+						return string.Join("_", TargetProjectNames);
 					}
 					
 					if (!string.IsNullOrEmpty(ProjectsRootDirectory))
@@ -58,7 +59,7 @@ namespace SlimJim.Model
 			set { solutionName = value; }
 		}
 
-		private string GetLastSegmentNameOfProjectsRootDirectory()
+	    private string GetLastSegmentNameOfProjectsRootDirectory()
 		{
 			MatchCollection matches = Regex.Matches(ProjectsRootDirectory, @"([^\\:]+)\\?");
 			string lastSegment = DefaultSolutionName;
@@ -74,7 +75,7 @@ namespace SlimJim.Model
 			return lastSegment;
 		}
 
-		public SlnGenerationMode Mode
+	    public SlnGenerationMode Mode
 		{
 			get 
 			{ 

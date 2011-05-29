@@ -1,4 +1,5 @@
 ﻿using System;
+using NDesk.Options;
 using SlimJim.Model;
 
 namespace SlimJim.Infrastructure
@@ -6,6 +7,7 @@ namespace SlimJim.Infrastructure
 	public class ArgsOptionsBuilder
 	{
 		private SlnGenerationOptions options;
+		private bool showHelp;
 
 		public static SlnGenerationOptions BuildOptions(string[] args, string workingDirectory)
 		{
@@ -24,46 +26,25 @@ namespace SlimJim.Infrastructure
 
 		private void ProcessSwitches(string[] args)
 		{
-			foreach (string arg in args)
-			{
-				if (!arg.StartsWith("/"))
-				{
-					options.TargetProjectNames.Add(arg);
-				}
-				else
-				{
-					ProcessSwitch(arg);
-				}
-			}
-		}
+			var optionSet = new OptionSet()
+				.Add("r|root=", "{PATH} to the root directory where your projects reside", v => options.ProjectsRootDirectory = v)
+				.Add("t|target=", "{NAME} of a target project (repeat for multiple targets)", v => options.TargetProjectNames.Add(v))
+				.Add("s|search=", "additional {PATH} to search for additional projects to include outside of the root directory (repeat for multiple paths)", v => options.AdditionalSearchPaths.Add(v))
+				.Add("o|out=", "directory {PATH} where you want the .sln file written", v => options.SlnOutputPath = v)
+				.Add("v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", v => options.VisualStudioVersion = TryParseVersionNumber(v))
+				.Add("n|name=", "alternate {NAME} for solution file", v => options.SolutionName = v)
+				.Add("a|all", "include all efferent assembly references (omitted by default)", v => options.IncludeEfferentAssemblyReferences = true)
+				.Add("h|help", "display the help screen", v => showHelp = true);
 
-		private void ProcessSwitch(string arg)
-		{
-			string command = arg.Substring(1, 1);
-			string value = arg.Substring(3);
+			optionSet.Parse(args);
 
-			switch (command)
+			if (showHelp)
 			{
-				case "r":
-				case "d":
-					options.ProjectsRootDirectory = value;
-					break;
-				case "t":
-				case "p":
-					options.TargetProjectNames.Add(value);
-					break;
-				case "a":
-					options.AdditionalSearchPaths.Add(value);
-					break;
-				case "o":
-					options.SlnOutputPath = value;
-					break;
-				case "v":
-					options.VisualStudioVersion = TryParseVersionNumber(value);
-					break;
-				case "n":
-					options.SolutionName = value;
-					break;
+				Console.WriteLine("Usage: slimjim [OPTIONS]+");
+				Console.WriteLine("Generate a Visual Studio .sln file for a given directory of projects and one or more target project names.");
+				Console.WriteLine();
+				Console.WriteLine("Options:");
+				optionSet.WriteOptionDescriptions(Console.Out);
 			}
 		}
 

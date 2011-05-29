@@ -1,27 +1,12 @@
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using SlimJim.Model;
 
-namespace SlimJim.Test.Model
+namespace SlimJim.Test.Model.SlnBuilder
 {
 	[TestFixture]
-	public class SlnBuilderTests
+	public class SlnBuilderTests : SlnBuilderTestFixture
 	{
-		private string rootProjectName;
-		private Sln solution;
-		private ProjectPrototypes projects;
-		private SlnGenerationOptions options;
-
-		[SetUp]
-		public void BeforeEach()
-		{
-			projects = new ProjectPrototypes();
-			rootProjectName = projects.MyProject.AssemblyName;
-			options = new SlnGenerationOptions(@"C:\Projects");
-		}
-
-		[Test]
+	    [Test]
 		public void SlnNameIsEqualToRootProjectName()
 		{
 			GeneratePartialGraphSolution(new[] { rootProjectName });
@@ -207,13 +192,6 @@ namespace SlimJim.Test.Model
 					projects.MyProject, projects.TheirProject1, projects.OurProject2,
 					projects.OurProject1, projects.TheirProject2
 				}));
-		}
-
-		private void GeneratePartialGraphSolution(string[] targetProjectNames, params CsProj[] projectsList)
-		{
-			var generator = new SlnBuilder(new List<CsProj>(projectsList));
-			Array.ForEach(targetProjectNames, n => options.TargetProjectNames.Add(n));
-			solution = generator.BuildPartialGraphSln(options);
 		}
 	}
 }
