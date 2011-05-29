@@ -78,7 +78,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void ReadsFilesFromAdditionalSearchPathsAsWell()
 		{
-			options.AdditionalSearchPaths.AddRange(new[] {SearchPath1, SearchPath2});
+			options.AddAdditionalSearchPaths(new[] { SearchPath1, SearchPath2 });
 			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>());
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath1)).Return(new List<FileInfo>());
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath2)).Return(new List<FileInfo>());

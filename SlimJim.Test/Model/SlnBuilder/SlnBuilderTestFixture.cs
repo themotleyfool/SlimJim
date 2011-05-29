@@ -23,7 +23,7 @@ namespace SlimJim.Test.Model.SlnBuilder
         protected void GeneratePartialGraphSolution(string[] targetProjectNames, params CsProj[] projectsList)
         {
             var generator = new SlimJim.Model.SlnBuilder(new List<CsProj>(projectsList));
-            Array.ForEach(targetProjectNames, n => options.TargetProjectNames.Add(n));
+				options.AddTargetProjectNames(targetProjectNames);
             solution = generator.BuildPartialGraphSln(options);
         }
     }

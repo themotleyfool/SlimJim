@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using SlimJim.Infrastructure;
 using SlimJim.Model;
 
 namespace SlimJim.Test.Model

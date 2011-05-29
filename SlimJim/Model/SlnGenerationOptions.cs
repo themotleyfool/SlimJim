@@ -9,28 +9,34 @@ namespace SlimJim.Model
 		private const string DefaultSolutionName = "SlimJim";
 		private string solutionName;
 		private string slnOutputPath;
+		private readonly List<string> additionalSearchPaths;
 
-	    public SlnGenerationOptions(string workingDirectory)
+		public SlnGenerationOptions(string workingDirectory)
 		{
 			ProjectsRootDirectory = workingDirectory;
-			AdditionalSearchPaths = new List<string>();
+			additionalSearchPaths = new List<string>();
 			TargetProjectNames = new List<string>();
 			VisualStudioVersion = VisualStudioVersion.VS2010;
 		}
 
-	    public string ProjectsRootDirectory { get; set; }
-	    public List<string> AdditionalSearchPaths { get; private set; }
-	    public ICollection<string> TargetProjectNames { get; private set; }
-	    public VisualStudioVersion VisualStudioVersion { get; set; }
-	    public bool IncludeEfferentAssemblyReferences { get; set; }
+		public string ProjectsRootDirectory { get; set; }
 
-	    public string SlnOutputPath
+		public List<string> AdditionalSearchPaths
+		{
+			get { return additionalSearchPaths; }
+		}
+
+		public List<string> TargetProjectNames { get; private set; }
+		public VisualStudioVersion VisualStudioVersion { get; set; }
+		public bool IncludeEfferentAssemblyReferences { get; set; }
+
+		public string SlnOutputPath
 		{
 			get { return slnOutputPath ?? ProjectsRootDirectory; }
 			set { slnOutputPath = value; }
 		}
 
-	    public string SolutionName
+		public string SolutionName
 		{
 			get
 			{
@@ -40,12 +46,12 @@ namespace SlimJim.Model
 					{
 						return TargetProjectNames.First();
 					}
-					
+
 					if (TargetProjectNames.Count > 1)
 					{
 						return string.Join("_", TargetProjectNames);
 					}
-					
+
 					if (!string.IsNullOrEmpty(ProjectsRootDirectory))
 					{
 						return GetLastSegmentNameOfProjectsRootDirectory();
@@ -59,7 +65,7 @@ namespace SlimJim.Model
 			set { solutionName = value; }
 		}
 
-	    private string GetLastSegmentNameOfProjectsRootDirectory()
+		private string GetLastSegmentNameOfProjectsRootDirectory()
 		{
 			MatchCollection matches = Regex.Matches(ProjectsRootDirectory, @"([^\\:]+)\\?");
 			string lastSegment = DefaultSolutionName;
@@ -75,14 +81,24 @@ namespace SlimJim.Model
 			return lastSegment;
 		}
 
-	    public SlnGenerationMode Mode
+		public SlnGenerationMode Mode
 		{
-			get 
-			{ 
-				return TargetProjectNames.Count == 0 
-					? SlnGenerationMode.FullGraph 
-					: SlnGenerationMode.PartialGraph; 
+			get
+			{
+				return TargetProjectNames.Count == 0
+					? SlnGenerationMode.FullGraph
+					: SlnGenerationMode.PartialGraph;
 			}
+		}
+
+		public void AddAdditionalSearchPaths(params string[] searchPaths)
+		{
+			AdditionalSearchPaths.AddRange(searchPaths);
+		}
+
+		public void AddTargetProjectNames(params string[] targetProjectNames)
+		{
+			TargetProjectNames.AddRange(targetProjectNames);
 		}
 	}
 }
