@@ -8,6 +8,7 @@ namespace SlimJim.Model
 	public class SlnGenerationOptions
 	{
 		private const string DefaultSolutionName = "SlimJim";
+		private string projectsRootDirectory;
 		private string solutionName;
 		private string slnOutputPath;
 		private readonly List<string> additionalSearchPaths;
@@ -21,7 +22,16 @@ namespace SlimJim.Model
 		}
 
 		public List<string> TargetProjectNames { get; private set; }
-		public string ProjectsRootDirectory { get; set; }
+
+		public string ProjectsRootDirectory
+		{
+			get { return projectsRootDirectory; }
+			set
+			{
+				projectsRootDirectory = ResolvePath(value);
+			}
+		}
+
 		public VisualStudioVersion VisualStudioVersion { get; set; }
 		public bool IncludeEfferentAssemblyReferences { get; set; }
 

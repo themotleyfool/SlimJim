@@ -62,5 +62,14 @@ namespace SlimJim.Test.Model
 
 			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\Proj\Root\Solutions"));
 		}
+
+		[Test]
+		public void RelativeProjectsRootDirIsRootedAtWorkingDir()
+		{
+			options = new SlnGenerationOptions(@"C:\WorkingDir");
+			options.ProjectsRootDirectory = @"Proj\Root";
+
+			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\WorkingDir\Proj\Root"));		
+		}
 	}
 }
