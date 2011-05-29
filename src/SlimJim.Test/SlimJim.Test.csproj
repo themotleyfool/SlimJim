@@ -61,7 +61,7 @@
     <Compile Include="Model\SlnBuilder\IncludeEfferentAssemblyReferences.cs" />
     <Compile Include="Model\SlnBuilder\SlnBuilderTestFixture.cs" />
     <Compile Include="Model\SlnTests.cs" />
-    <Compile Include="Model\SolutionGenerationOptionsTests.cs" />
+    <Compile Include="Model\SlnGenerationOptionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleFiles\SampleFileHelper.cs" />
     <Compile Include="Model\SlnBuilder\SlnBuilderTests.cs" />

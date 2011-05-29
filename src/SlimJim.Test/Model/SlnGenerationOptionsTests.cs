@@ -4,7 +4,7 @@ using SlimJim.Model;
 namespace SlimJim.Test.Model
 {
 	[TestFixture]
-	public class SolutionGenerationOptionsTests
+	public class SlnGenerationOptionsTests
 	{
 		private SlnGenerationOptions options;
 		private const string WorkingDirectory = @"C:\WorkingDir";
@@ -43,6 +43,24 @@ namespace SlimJim.Test.Model
 
 			options = new SlnGenerationOptions(@"\");
 			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
+		}
+
+		[Test]
+		public void AdditionalSearchPathsRootedAtProjectRoot()
+		{
+			options = new SlnGenerationOptions(@"C:\Proj\Root");
+			options.AddAdditionalSearchPaths(@"..\SearchPath", @"..\..\OtherPath\Pork");
+
+			Assert.That(options.AdditionalSearchPaths, Is.EqualTo(new[] {@"C:\Proj\Root\..\SearchPath", @"C:\Proj\Root\..\..\OtherPath\Pork"}));
+		}
+
+		[Test]
+		public void RelativeSlnOutputPathRootedAtProjectsRoot()
+		{
+			options = new SlnGenerationOptions(@"C:\Proj\Root");
+			options.SlnOutputPath = "Solutions";
+
+			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\Proj\Root\Solutions"));
 		}
 	}
 }

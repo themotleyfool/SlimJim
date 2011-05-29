@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -19,20 +20,27 @@ namespace SlimJim.Model
 			VisualStudioVersion = VisualStudioVersion.VS2010;
 		}
 
-		public string ProjectsRootDirectory { get; set; }
-
-		public List<string> AdditionalSearchPaths
-		{
-			get { return additionalSearchPaths; }
-		}
-
 		public List<string> TargetProjectNames { get; private set; }
+		public string ProjectsRootDirectory { get; set; }
 		public VisualStudioVersion VisualStudioVersion { get; set; }
 		public bool IncludeEfferentAssemblyReferences { get; set; }
 
+		public List<string> AdditionalSearchPaths
+		{
+			get
+			{
+				return additionalSearchPaths.ConvertAll(ResolvePath);
+			}
+		}
+
+		private string ResolvePath(string p)
+		{
+			return !Path.IsPathRooted(p) ? Path.Combine(ProjectsRootDirectory, p) : p;
+		}
+
 		public string SlnOutputPath
 		{
-			get { return slnOutputPath ?? ProjectsRootDirectory; }
+			get { return slnOutputPath != null ? ResolvePath(slnOutputPath) : ProjectsRootDirectory; }
 			set { slnOutputPath = value; }
 		}
 
@@ -93,7 +101,7 @@ namespace SlimJim.Model
 
 		public void AddAdditionalSearchPaths(params string[] searchPaths)
 		{
-			AdditionalSearchPaths.AddRange(searchPaths);
+			additionalSearchPaths.AddRange(searchPaths);
 		}
 
 		public void AddTargetProjectNames(params string[] targetProjectNames)
