@@ -13,13 +13,14 @@ SlimJim is meant to be invoked from the command line. It will search a given dir
 Invocation
 ----------
 
-* `--target ProjectName`			Required; include one or more target projects in your solution. All dependencies will be included for them. Repeat switch for multiple targets.
-* `--root C:\Projects\Root`			Optional; indicates the directory which contains the root project that you want to build a solution file for. Defaults to the working directory.
-* `--search C:\Additional\Search\Path`   Optional; specify one or more directories to search for projects that depend on or are depdended on by the target projects.
-* `--out SolnDir` 				Optional; specify a directory other than the working or target directory to write the generated solution file.
-* `--version 2008`         			Optional; supported versions: 2008, 2010 (default).
-* `--name SolutionName`                     Optional; alternate name for generated solution file. If omitted, defaults to target project name.
-* `--all`						Optional; indicates that all efferent assembly references should be included in the solution. By default, they are omitted.
+* `--target ProjectName`				Required; include one or more target projects in your solution. All dependencies will be included for them. Repeat switch for multiple targets.
+* `--root C:\Projects\Root`				Optional; indicates the directory which contains the root project that you want to build a solution file for. Defaults to the working directory.
+* `--search C:\Additional\Search\Path`  Optional; specify one or more directories to search for projects that depend on or are depdended on by the target projects.
+* `--out SolnDir` 						Optional; specify a directory other than the working or target directory to write the generated solution file.
+* `--version 2008`         				Optional; supported versions: 2008, 2010 (default).
+* `--name SolutionName`                 Optional; alternate name for generated solution file. If omitted, defaults to target project name.
+* `--all`								Optional; indicates that all efferent assembly references should be included in the solution. By default, they are omitted.
+* `--ignore`							Optional; indicates that directories with names matching the given regex pattern will be ignored. Repeat for multiple patterns.
 
 
 Upcoming features

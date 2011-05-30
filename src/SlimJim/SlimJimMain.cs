@@ -13,9 +13,18 @@ namespace SlimJim
 			log4net.Config.BasicConfigurator.Configure(consoleAppender);
 
 			var fileGenerator = new SlnFileGenerator();
-			var options = ArgsOptionsBuilder.BuildOptions(args, Directory.GetCurrentDirectory());
-			
-			fileGenerator.GenerateSolutionFile(options);
+
+			var optionsBuilder = new ArgsOptionsBuilder();
+			var options = optionsBuilder.Build(args, Directory.GetCurrentDirectory());
+
+			if (options.ShowHelp)
+			{
+				optionsBuilder.WriteHelpMessage();
+			}
+			else
+			{
+				fileGenerator.GenerateSolutionFile(options);				
+			}
 		}
 	}
 }

@@ -1,4 +1,3 @@
-using System;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Model;
@@ -22,6 +21,7 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(options.Mode, Is.EqualTo(SlnGenerationMode.FullGraph), "Mode");
 			Assert.That(options.AdditionalSearchPaths, Is.Empty, "AdditionalSearchPaths");
 			Assert.That(options.IncludeEfferentAssemblyReferences, Is.False, "IncludeEfferentAssemblyReferences");
+			Assert.That(options.ShowHelp, Is.False, "ShowHelp");
 		}
 
 		[Test]
@@ -136,21 +136,12 @@ namespace SlimJim.Test.Infrastructure
 			// check console output
 		}
 
-		//[Test]
-		//public void RaisesEventOnParseError()
-		//{
-		//   var builder = new ArgsOptionsBuilder();
-		//   builder.ParseError += HandleParseError;
-
-		//   builder.Build(new[] {"--root", "--all"}, @"C:\WorkingDir");
-
-		//   Assert.That(parseErrorHandled, Is.True, "parseErrorHandled");
-		//}
-
-		private void HandleParseError(string errorMessage)
+		[Test]
+		public void ShowHelpIsSetOnOptions()
 		{
-			parseErrorHandled = true;
-			Console.WriteLine(errorMessage);
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "--help" }, WorkingDirectory);
+
+			Assert.That(options.ShowHelp, Is.True, "ShowHelp");
 		}
 	}
 }
