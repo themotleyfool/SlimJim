@@ -31,6 +31,4 @@ Upcoming features
 
 Known issues 
 ------------
-* If SlnOutputPath does not exist, an exception is raised.
-* All paths must be absolute. Relative paths for additional search paths, projects root, and solution output path will be supported soon.
 * No error handling
