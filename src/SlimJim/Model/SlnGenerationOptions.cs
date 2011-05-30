@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,11 +13,13 @@ namespace SlimJim.Model
 		private string solutionName;
 		private string slnOutputPath;
 		private readonly List<string> additionalSearchPaths;
+		private readonly List<string> ignoreDirectoryPatterns;
 
 		public SlnGenerationOptions(string workingDirectory)
 		{
 			ProjectsRootDirectory = workingDirectory;
 			additionalSearchPaths = new List<string>();
+			ignoreDirectoryPatterns = new List<string>();
 			TargetProjectNames = new List<string>();
 			VisualStudioVersion = VisualStudioVersion.VS2010;
 		}
@@ -109,6 +112,11 @@ namespace SlimJim.Model
 			}
 		}
 
+		public List<string> IgnoreDirectoryPatterns
+		{
+			get { return ignoreDirectoryPatterns; }
+		}
+
 		public void AddAdditionalSearchPaths(params string[] searchPaths)
 		{
 			additionalSearchPaths.AddRange(searchPaths);
@@ -117,6 +125,11 @@ namespace SlimJim.Model
 		public void AddTargetProjectNames(params string[] targetProjectNames)
 		{
 			TargetProjectNames.AddRange(targetProjectNames);
+		}
+
+		public void AddIgnoreDirectoryPatterns(params string [] patterns)
+		{
+			ignoreDirectoryPatterns.AddRange(patterns);
 		}
 	}
 }

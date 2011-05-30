@@ -7,7 +7,14 @@ namespace SlimJim.Infrastructure
 	{
 		public virtual void WriteSlnFile(Sln solution, string writeInDirectory)
 		{
-			using (var writer = new StreamWriter(GetOutputFilePath(writeInDirectory, solution)))
+			var outputFile = new FileInfo(GetOutputFilePath(writeInDirectory, solution));
+
+			if (!outputFile.Directory.Exists)
+			{
+				outputFile.Directory.Create();
+			}
+
+			using (var writer = new StreamWriter(outputFile.Open(FileMode.Create)))
 			{
 				var renderer = new SlnFileRenderer(solution);
 				string fileContents = renderer.Render();

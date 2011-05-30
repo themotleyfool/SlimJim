@@ -1,22 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
+using log4net;
 
 namespace SlimJim.Infrastructure
 {
 	public class ProjectFileFinder
 	{
-		private readonly List<string> ignorePaths;
+		private static readonly ILog Log = LogManager.GetLogger(typeof(ProjectFileFinder));
+		private readonly List<Regex> ignorePatterns;
 
 		public ProjectFileFinder()
 		{
-			ignorePaths = new List<string>();
+			ignorePatterns = new List<Regex>();
+			IgnorePatterns(@"^\.svn$", @"^\.hg$", @"^\.git$", "^bin$", "^obj$", "ReSharper");
 		}
 
 		public virtual List<FileInfo> FindAllProjectFiles(string startPath)
 		{
-			var root = new DirectoryInfo(startPath);
+			Log.InfoFormat("Searching for .csproj files at {0}", startPath);
 
+			var root = new DirectoryInfo(startPath);
 			var projectFiles = GetProjectFiles(root);
 
 			return projectFiles;
@@ -25,14 +29,17 @@ namespace SlimJim.Infrastructure
 		private List<FileInfo> GetProjectFiles(DirectoryInfo directory)
 		{
 			var files = new List<FileInfo>();
-			FileInfo[] projects = directory.GetFiles("*.csproj");
-			
+
 			if (!PathIsIgnored(directory))
 			{
+				Log.Debug("Searching subdirectory: " + directory.FullName);
+
+				FileInfo[] projects = directory.GetFiles("*.csproj");
+
 				if (projects.Length > 0)
 				{
 					files.Add(projects[0]);
-					Console.WriteLine("Found project " + projects[0].Name);
+					Log.InfoFormat("Found project {0} at {1}.", projects[0].Name, projects[0].DirectoryName);
 				}
 				else
 				{
@@ -46,15 +53,15 @@ namespace SlimJim.Infrastructure
 			return files;
 		}
 
-		private bool PathIsIgnored(DirectoryInfo directory)
+		public bool PathIsIgnored(DirectoryInfo directory)
 		{
-			return ignorePaths.Contains(directory.Name.ToLower());
+			return ignorePatterns.Exists(p => p.IsMatch(directory.Name));
 		}
 
-		public virtual void IgnorePaths(params string[] paths)
+		public virtual void IgnorePatterns(params string[] patterns)
 		{
-			var lowerCasedPaths = new List<string>(paths).ConvertAll(p => p.ToLower());
-			ignorePaths.AddRange(lowerCasedPaths);
+			var regexes = new List<string>(patterns).ConvertAll(p => new Regex(p, RegexOptions.IgnoreCase));
+			ignorePatterns.AddRange(regexes);
 		}
 	}
 }

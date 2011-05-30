@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Model;
@@ -8,6 +9,7 @@ namespace SlimJim.Test.Infrastructure
 	public class ArgsOptionsBuilderTests
 	{
 		private SlnGenerationOptions options;
+		private bool parseErrorHandled;
 		private const string WorkingDirectory = @"C:\WorkingDir";
 
 		[Test]
@@ -119,11 +121,36 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(options.IncludeEfferentAssemblyReferences, Is.True, "IncludeEfferentAssemblyReferences");
 		}
 
+		[Test]
+		public void IgnoresFolderNames()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] {"--ignore", "Folder1", "--ignore", "Folder2"}, WorkingDirectory);
+
+			Assert.That(options.IgnoreDirectoryPatterns, Is.EqualTo(new[] {"Folder1", "Folder2"}));
+		}
+
 		[Test, Explicit]
 		public void ShowHelp()
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] {"--help"}, WorkingDirectory);
 			// check console output
+		}
+
+		//[Test]
+		//public void RaisesEventOnParseError()
+		//{
+		//   var builder = new ArgsOptionsBuilder();
+		//   builder.ParseError += HandleParseError;
+
+		//   builder.Build(new[] {"--root", "--all"}, @"C:\WorkingDir");
+
+		//   Assert.That(parseErrorHandled, Is.True, "parseErrorHandled");
+		//}
+
+		private void HandleParseError(string errorMessage)
+		{
+			parseErrorHandled = true;
+			Console.WriteLine(errorMessage);
 		}
 	}
 }

@@ -83,7 +83,17 @@ namespace SlimJim.Test.Infrastructure
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath1)).Return(new List<FileInfo>());
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath2)).Return(new List<FileInfo>());
 
-			List<CsProj> projects = repository.LookupCsProjsFromDirectory(options);
+			repository.LookupCsProjsFromDirectory(options);
+		}
+
+		[Test]
+		public void IngoresDirectoryPatternsInOptions()
+		{
+			options.AddIgnoreDirectoryPatterns("Folder1", "Folder2");
+			finder.Expect(f => f.IgnorePatterns(new[] {"Folder1", "Folder2"}));
+			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>());
+
+			repository.LookupCsProjsFromDirectory(options);
 		}
 	}
 }
