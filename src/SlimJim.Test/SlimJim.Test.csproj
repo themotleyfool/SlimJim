@@ -58,6 +58,7 @@
     <Compile Include="Infrastructure\ProjectFileFinderTests.cs" />
     <Compile Include="Infrastructure\SlnFileRendererTests.cs" />
     <Compile Include="Model\ProjectPrototypes.cs" />
+    <Compile Include="Model\SlnBuilder\IncludeAllProjectsInSln.cs" />
     <Compile Include="Model\SlnBuilder\IncludeEfferentAssemblyReferences.cs" />
     <Compile Include="Model\SlnBuilder\SlnBuilderTestFixture.cs" />
     <Compile Include="Model\SlnTests.cs" />

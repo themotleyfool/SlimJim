@@ -51,7 +51,7 @@ namespace SlimJim.Test
 			options.TargetProjectNames.Add(TargetProject);
 
 			repo.Expect(r => r.LookupCsProjsFromDirectory(options)).Return(projects);
-			slnBuilder.Expect(bld => bld.BuildPartialGraphSln(options)).Return(createdSlnObject);
+			slnBuilder.Expect(bld => bld.BuildSln(options)).Return(createdSlnObject);
 			slnWriter.Expect(wr => wr.WriteSlnFile(createdSlnObject, ProjectsDir));
 
 			gen.GenerateSolutionFile(options);

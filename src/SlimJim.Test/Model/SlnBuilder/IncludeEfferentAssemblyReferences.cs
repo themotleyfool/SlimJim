@@ -12,7 +12,7 @@ namespace SlimJim.Test.Model.SlnBuilder
             projects.MyProject.ReferencesAssemblies(projects.TheirProject1, projects.TheirProject2);
             projects.TheirProject2.ReferencesProjects(projects.TheirProject3);
             projects.OurProject1.ReferencesAssemblies(projects.MyProject, projects.OurProject2);
-            GeneratePartialGraphSolution(new[] {rootProjectName},
+            GeneratePartialGraphSolution(new[] {targetProjectName},
                                          projects.MyProject,
                                          projects.TheirProject1,
                                          projects.TheirProject2,

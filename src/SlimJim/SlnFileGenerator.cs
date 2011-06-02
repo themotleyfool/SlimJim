@@ -26,7 +26,7 @@ namespace SlimJim
 					Path.Combine(options.SlnOutputPath, options.SolutionName));
 
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
-			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildPartialGraphSln(options);
+			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildSln(options);
 			SlnWriter.WriteSlnFile(solution, options.SlnOutputPath);
 		}
 	}

@@ -7,7 +7,7 @@ namespace SlimJim.Test.Model.SlnBuilder
 {
     public class SlnBuilderTestFixture
     {
-        protected string rootProjectName;
+        protected string targetProjectName;
         protected Sln solution;
         protected ProjectPrototypes projects;
         protected SlnGenerationOptions options;
@@ -16,7 +16,7 @@ namespace SlimJim.Test.Model.SlnBuilder
         public void BeforeEach()
         {
             projects = new ProjectPrototypes();
-            rootProjectName = projects.MyProject.AssemblyName;
+            targetProjectName = projects.MyProject.AssemblyName;
             options = new SlnGenerationOptions(@"C:\Projects");
         }
 
@@ -24,7 +24,7 @@ namespace SlimJim.Test.Model.SlnBuilder
         {
             var generator = new SlimJim.Model.SlnBuilder(new List<CsProj>(projectsList));
 				options.AddTargetProjectNames(targetProjectNames);
-            solution = generator.BuildPartialGraphSln(options);
+            solution = generator.BuildSln(options);
         }
     }
 }

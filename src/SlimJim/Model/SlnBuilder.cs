@@ -7,84 +7,111 @@ namespace SlimJim.Model
 		private readonly List<CsProj> projectsList;
 		private Sln builtSln;
 		private static SlnBuilder overriddenBuilder;
-	    private SlnGenerationOptions options;
+		private SlnGenerationOptions options;
 
-	    public SlnBuilder(List<CsProj> projectsList)
+		public SlnBuilder(List<CsProj> projectsList)
 		{
 			this.projectsList = projectsList;
 		}
 
-	    public virtual Sln BuildPartialGraphSln(SlnGenerationOptions options)
+		public virtual Sln BuildSln(SlnGenerationOptions options)
 		{
-	        this.options = options;
-	        builtSln = new Sln(options.SolutionName)
-				{
-					Version = options.VisualStudioVersion
-				};
+			this.options = options;
+			builtSln = new Sln(options.SolutionName)
+			 {
+				 Version = options.VisualStudioVersion
+			 };
 
-	        foreach (string targetProjectName in options.TargetProjectNames)
+			AddProjectsToSln(options);
+
+			return builtSln;
+		}
+
+		private void AddProjectsToSln(SlnGenerationOptions options)
+		{
+			if (options.Mode == SlnGenerationMode.PartialGraph)
+			{
+				AddPartialProjectGraphToSln(options);
+			}
+			else
+			{
+				AddAllProjectsToSln();
+			}
+		}
+
+		private void AddPartialProjectGraphToSln(SlnGenerationOptions options)
+		{
+			foreach (string targetProjectName in options.TargetProjectNames)
 			{
 				CsProj rootProject = AddAssemblySubtree(targetProjectName);
 
 				AddAfferentReferencesToProject(rootProject);
 			}
-
-			return builtSln;
 		}
 
-	    private CsProj AddAssemblySubtree(string assemblyName)
-	    {
-	        CsProj project = FindProjectByAssemblyName(assemblyName);
+		private void AddAllProjectsToSln()
+		{
+			projectsList.ForEach(AddProject);
+		}
 
-	        AddProjectAndReferences(project);
+		private CsProj AddAssemblySubtree(string assemblyName)
+		{
+			CsProj project = FindProjectByAssemblyName(assemblyName);
 
-	        return project;
-	    }
+			AddProjectAndReferences(project);
 
-	    private CsProj FindProjectByAssemblyName(string assemblyName)
-	    {
-	        return projectsList.Find(csp => csp.AssemblyName == assemblyName);
-	    }
+			return project;
+		}
 
-	    private void AddProjectAndReferences(CsProj project)
-	    {
-	        if (project != null)
-	        {
-	            builtSln.AddProjects(project);
+		private CsProj FindProjectByAssemblyName(string assemblyName)
+		{
+			return projectsList.Find(csp => csp.AssemblyName == assemblyName);
+		}
 
-	            IncludeEfferentProjectReferences(project);
+		private void AddProjectAndReferences(CsProj project)
+		{
+			if (project != null)
+			{
+				AddProject(project);
 
-                if (options.IncludeEfferentAssemblyReferences)
-                {
-                    IncludeEfferentAssemblyReferences(project);
-                }
-	        }
-	    }
+				IncludeEfferentProjectReferences(project);
 
-	    private void IncludeEfferentProjectReferences(CsProj project)
-	    {
-	        foreach (string projectGuid in project.ReferencedProjectGuids)
-	        {
-	            AddProjectSubtree(projectGuid);
-	        }
-	    }
+				if (options.IncludeEfferentAssemblyReferences)
+				{
+					IncludeEfferentAssemblyReferences(project);
+				}
+			}
+		}
 
-	    private void IncludeEfferentAssemblyReferences(CsProj project)
-	    {
-	        foreach (string assemblyName in project.ReferencedAssemblyNames)
-	        {
-	            AddAssemblySubtree(assemblyName);
-	        }
-	    }
+		private void AddProject(CsProj project)
+		{
+			builtSln.AddProjects(project);
+		}
 
-	    private void AddProjectSubtree(string projectGuid)
-	    {
-	        CsProj referencedProject = FindProjectByProjectGuid(projectGuid);
+		private void IncludeEfferentProjectReferences(CsProj project)
+		{
+			foreach (string projectGuid in project.ReferencedProjectGuids)
+			{
+				AddProjectSubtree(projectGuid);
+			}
+		}
 
-	        AddProjectAndReferences(referencedProject);
-	    }
+		private void IncludeEfferentAssemblyReferences(CsProj project)
+		{
+			foreach (string assemblyName in project.ReferencedAssemblyNames)
+			{
+				AddAssemblySubtree(assemblyName);
+			}
+		}
 
-	    private void AddAfferentReferencesToProject(CsProj project)
+		private void AddProjectSubtree(string projectGuid)
+		{
+			CsProj referencedProject = FindProjectByProjectGuid(projectGuid);
+
+			AddProjectAndReferences(referencedProject);
+		}
+
+		private void AddAfferentReferencesToProject(CsProj project)
 		{
 			if (project != null)
 			{
@@ -100,7 +127,7 @@ namespace SlimJim.Model
 			}
 		}
 
-	    private void AddAfferentReferences(List<CsProj> afferentReferences)
+		private void AddAfferentReferences(List<CsProj> afferentReferences)
 		{
 			foreach (CsProj assemblyReference in afferentReferences)
 			{
@@ -108,12 +135,12 @@ namespace SlimJim.Model
 			}
 		}
 
-	    private CsProj FindProjectByProjectGuid(string projectGuid)
+		private CsProj FindProjectByProjectGuid(string projectGuid)
 		{
 			return projectsList.Find(csp => csp.Guid == projectGuid);
 		}
 
-	    public static SlnBuilder GetSlnBuilder(List<CsProj> projects)
+		public static SlnBuilder GetSlnBuilder(List<CsProj> projects)
 		{
 			return overriddenBuilder ?? new SlnBuilder(projects);
 		}
