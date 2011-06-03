@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -37,6 +38,7 @@ namespace SlimJim.Model
 		public VisualStudioVersion VisualStudioVersion { get; set; }
 		public bool IncludeEfferentAssemblyReferences { get; set; }
 		public bool ShowHelp { get; set; }
+		public bool OpenInVisualStudio { get; set; }
 
 		public List<string> AdditionalSearchPaths
 		{

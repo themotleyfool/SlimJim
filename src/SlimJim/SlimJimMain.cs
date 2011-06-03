@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using log4net;
 using log4net.Appender;
 using log4net.Layout;
 using SlimJim.Infrastructure;
@@ -12,6 +13,7 @@ namespace SlimJim
 			var consoleAppender = new ConsoleAppender() { Layout = new PatternLayout("%message%newline") };
 			log4net.Config.BasicConfigurator.Configure(consoleAppender);
 
+			var log = LogManager.GetLogger(typeof(SlnFileGenerator));
 			var fileGenerator = new SlnFileGenerator();
 
 			var optionsBuilder = new ArgsOptionsBuilder();
@@ -23,7 +25,13 @@ namespace SlimJim
 			}
 			else
 			{
-				fileGenerator.GenerateSolutionFile(options);				
+				var solutionPath = fileGenerator.GenerateSolutionFile(options);
+				
+				if (options.OpenInVisualStudio)
+				{
+					log.InfoFormat("Opening {0} in Visual Studio {1}", solutionPath, options.VisualStudioVersion.Year);
+					VisualStudioIntegration.OpenSolution(solutionPath, options.VisualStudioVersion);
+				}
 			}
 		}
 	}

@@ -19,7 +19,7 @@ namespace SlimJim
 			SlnWriter = new SlnFileWriter();
 		}
 
-		public void GenerateSolutionFile(SlnGenerationOptions options)
+		public string GenerateSolutionFile(SlnGenerationOptions options)
 		{
 			Log.InfoFormat("Generating solution file. Targets: {0}; Destination: {1}", 
 					string.Join(", ", options.TargetProjectNames),
@@ -27,7 +27,7 @@ namespace SlimJim
 
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildPartialGraphSln(options);
-			SlnWriter.WriteSlnFile(solution, options.SlnOutputPath);
+			return SlnWriter.WriteSlnFile(solution, options.SlnOutputPath).FullName;
 		}
 	}
 }

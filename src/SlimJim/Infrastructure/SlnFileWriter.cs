@@ -5,7 +5,7 @@ namespace SlimJim.Infrastructure
 {
 	public class SlnFileWriter
 	{
-		public virtual void WriteSlnFile(Sln solution, string writeInDirectory)
+		public virtual FileInfo WriteSlnFile(Sln solution, string writeInDirectory)
 		{
 			var outputFile = new FileInfo(GetOutputFilePath(writeInDirectory, solution));
 
@@ -20,6 +20,8 @@ namespace SlimJim.Infrastructure
 				string fileContents = renderer.Render();
 				writer.Write(fileContents);
 			}
+
+			return outputFile;
 		}
 
 		private string GetOutputFilePath(string writeInDirectory, Sln solution)

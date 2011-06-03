@@ -5,17 +5,19 @@ namespace SlimJim.Model
 {
 	public sealed class VisualStudioVersion
 	{
-		private static readonly VisualStudioVersion vs2008 = new VisualStudioVersion("2008", "10.00");
-		private static readonly VisualStudioVersion vs2010 = new VisualStudioVersion("2010", "11.00");
+		private static readonly VisualStudioVersion vs2008 = new VisualStudioVersion("2008", "10.00", "9.0");
+		private static readonly VisualStudioVersion vs2010 = new VisualStudioVersion("2010", "11.00", "10.0");
 
-		private VisualStudioVersion(string year, string slnFileVersionNumber)
+		private VisualStudioVersion(string year, string slnFileVersionNumber, string pathVersionNumber)
 		{
 			Year = year;
 			SlnFileVersionNumber = slnFileVersionNumber;
+			PathVersionNumber = pathVersionNumber;
 		}
 
 		public string Year { get; private set; }
 		public string SlnFileVersionNumber { get; private set; }
+		public string PathVersionNumber { get; private set; }
 
 		public static VisualStudioVersion VS2008
 		{

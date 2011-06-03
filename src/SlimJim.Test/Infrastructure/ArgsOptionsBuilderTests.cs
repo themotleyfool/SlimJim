@@ -22,6 +22,7 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(options.AdditionalSearchPaths, Is.Empty, "AdditionalSearchPaths");
 			Assert.That(options.IncludeEfferentAssemblyReferences, Is.False, "IncludeEfferentAssemblyReferences");
 			Assert.That(options.ShowHelp, Is.False, "ShowHelp");
+			Assert.That(options.OpenInVisualStudio, Is.False, "OpenInVisualStudio");
 		}
 
 		[Test]
@@ -142,6 +143,14 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--help" }, WorkingDirectory);
 
 			Assert.That(options.ShowHelp, Is.True, "ShowHelp");
+		}
+
+		[Test]
+		public void SpecifyOpenInVisualStudio()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "--open" }, WorkingDirectory);
+
+			Assert.That(options.OpenInVisualStudio, Is.True, "OpenInVisualStudio");
 		}
 	}
 }

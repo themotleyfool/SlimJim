@@ -49,7 +49,9 @@ namespace SlimJim.Infrastructure
 			            		{ "h|help", "display the help screen", 
 			            			v => options.ShowHelp = true },
 			            		{ "i|ignore=", "ignore directories whose name matches the given {REGEX_PATTERN} (repeat for multiple ignores)", 
-			            			v => options.AddIgnoreDirectoryPatterns(v) }
+			            			v => options.AddIgnoreDirectoryPatterns(v) },
+								{ "open", "open the solution in Visual Studio", 
+			            			v => options.OpenInVisualStudio = true }
 			            	};
 
 			try
