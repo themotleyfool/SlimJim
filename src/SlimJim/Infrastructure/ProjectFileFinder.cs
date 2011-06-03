@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using log4net;
 
@@ -7,7 +8,7 @@ namespace SlimJim.Infrastructure
 {
 	public class ProjectFileFinder
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(ProjectFileFinder));
+		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 		private readonly List<Regex> ignorePatterns;
 
 		public ProjectFileFinder()
@@ -32,25 +33,39 @@ namespace SlimJim.Infrastructure
 
 			if (!PathIsIgnored(directory))
 			{
-				Log.Debug("Searching subdirectory: " + directory.FullName);
-
-				FileInfo[] projects = directory.GetFiles("*.csproj");
-
-				if (projects.Length > 0)
-				{
-					files.Add(projects[0]);
-					Log.InfoFormat("Found project {0} at {1}.", projects[0].Name, projects[0].DirectoryName);
-				}
-				else
-				{
-					foreach (DirectoryInfo dir in directory.EnumerateDirectories())
-					{
-						files.AddRange(GetProjectFiles(dir));
-					}
-				}
+				SearchDirectoryForProjects(directory, files);
 			}
 
 			return files;
+		}
+
+		private void SearchDirectoryForProjects(DirectoryInfo directory, List<FileInfo> files)
+		{
+			FileInfo[] projects = directory.GetFiles("*.csproj");
+
+			if (projects.Length > 0)
+			{
+				AddProjectFile(projects, files);
+			}
+			else
+			{
+				RecurseChildDirectories(directory, files);
+			}
+		}
+
+		private void RecurseChildDirectories(DirectoryInfo directory, List<FileInfo> files)
+		{
+			foreach (DirectoryInfo dir in directory.EnumerateDirectories())
+			{
+				files.AddRange(GetProjectFiles(dir));
+			}
+		}
+
+		private void AddProjectFile(FileInfo[] projects, List<FileInfo> files)
+		{
+			files.Add(projects[0]);
+
+			Log.Debug(projects[0].FullName);
 		}
 
 		public bool PathIsIgnored(DirectoryInfo directory)

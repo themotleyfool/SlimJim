@@ -1,10 +1,14 @@
 ﻿using System.IO;
+using System.Reflection;
+using log4net;
 using SlimJim.Model;
 
 namespace SlimJim.Infrastructure
 {
 	public class SlnFileWriter
 	{
+		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
 		public virtual void WriteSlnFile(Sln solution, string writeInDirectory)
 		{
 			var outputFile = new FileInfo(GetOutputFilePath(writeInDirectory, solution));
@@ -20,6 +24,8 @@ namespace SlimJim.Infrastructure
 				string fileContents = renderer.Render();
 				writer.Write(fileContents);
 			}
+
+			Log.Info("Solution file written to " + outputFile.FullName);
 		}
 
 		private string GetOutputFilePath(string writeInDirectory, Sln solution)

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using log4net.Appender;
+using log4net.Core;
 using log4net.Layout;
 using SlimJim.Infrastructure;
 
@@ -9,7 +10,11 @@ namespace SlimJim
 	{
 		public static void Main(string[] args)
 		{
-			var consoleAppender = new ConsoleAppender() { Layout = new PatternLayout("%message%newline") };
+			var consoleAppender = new ConsoleAppender()
+			                      	{
+			                      		Layout = new PatternLayout("%message%newline"),
+			                      		Threshold = Level.Info
+			                      	};
 			log4net.Config.BasicConfigurator.Configure(consoleAppender);
 
 			var fileGenerator = new SlnFileGenerator();

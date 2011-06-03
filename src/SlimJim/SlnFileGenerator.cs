@@ -21,13 +21,46 @@ namespace SlimJim
 
 		public void GenerateSolutionFile(SlnGenerationOptions options)
 		{
-			Log.InfoFormat("Generating solution file. Targets: {0}; Destination: {1}", 
-					string.Join(", ", options.TargetProjectNames),
-					Path.Combine(options.SlnOutputPath, options.SolutionName));
+			LogSummary(options);
 
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildSln(options);
 			SlnWriter.WriteSlnFile(solution, options.SlnOutputPath);
+		}
+
+		private void LogSummary(SlnGenerationOptions options)
+		{
+			Log.InfoFormat("SlimJim solution file generator.");
+			Log.InfoFormat("");
+			Log.InfoFormat("----------------------------------------");
+			Log.InfoFormat("Target projects:             {0}", SummarizeTargetProjects(options));
+			Log.InfoFormat("Destination:                 {0}", Path.Combine(options.SlnOutputPath, options.SolutionName + ".sln"));
+			Log.InfoFormat("Visual Studio Version:       {0}", options.VisualStudioVersion);
+			Log.InfoFormat("Dinosaur:                    {0}", GetDinosaur());
+			Log.InfoFormat("----------------------------------------");
+			Log.InfoFormat("");
+		}
+
+		private string GetDinosaur()
+		{
+			var dinosaurNumber = DateTime.Now.Ticks % 3;
+
+			switch (dinosaurNumber)
+			{
+				case 0:
+					return "Tyranosaurus Rex";
+				case 1:
+					return "Triceratops";
+				default:
+					return "Giganotosaurus";
+			}
+		}
+
+		private string SummarizeTargetProjects(SlnGenerationOptions options)
+		{
+			var targets = string.Join(", ", options.TargetProjectNames);
+
+			return string.IsNullOrEmpty(targets) ? "<none>" : targets;
 		}
 	}
 }

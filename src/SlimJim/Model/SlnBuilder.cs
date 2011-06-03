@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
+using log4net;
 
 namespace SlimJim.Model
 {
 	public class SlnBuilder
 	{
+		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 		private readonly List<CsProj> projectsList;
 		private Sln builtSln;
 		private static SlnBuilder overriddenBuilder;
@@ -41,6 +44,8 @@ namespace SlimJim.Model
 
 		private void AddPartialProjectGraphToSln(SlnGenerationOptions options)
 		{
+			Log.Info("Building partial graph solution for target projects: " + string.Join(", ", options.TargetProjectNames));
+
 			foreach (string targetProjectName in options.TargetProjectNames)
 			{
 				CsProj rootProject = AddAssemblySubtree(targetProjectName);
@@ -51,6 +56,8 @@ namespace SlimJim.Model
 
 		private void AddAllProjectsToSln()
 		{
+			Log.Info("Building full graph solution.");
+
 			projectsList.ForEach(AddProject);
 		}
 
