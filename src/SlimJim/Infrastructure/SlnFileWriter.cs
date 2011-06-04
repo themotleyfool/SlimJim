@@ -9,7 +9,7 @@ namespace SlimJim.Infrastructure
 	{
 		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-		public virtual void WriteSlnFile(Sln solution, string writeInDirectory)
+		public virtual FileInfo WriteSlnFile(Sln solution, string writeInDirectory)
 		{
 			var outputFile = new FileInfo(GetOutputFilePath(writeInDirectory, solution));
 
@@ -26,6 +26,8 @@ namespace SlimJim.Infrastructure
 			}
 
 			Log.Info("Solution file written to " + outputFile.FullName);
+
+			return outputFile;
 		}
 
 		private string GetOutputFilePath(string writeInDirectory, Sln solution)

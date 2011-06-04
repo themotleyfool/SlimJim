@@ -19,13 +19,13 @@ namespace SlimJim
 			SlnWriter = new SlnFileWriter();
 		}
 
-		public void GenerateSolutionFile(SlnGenerationOptions options)
+		public string GenerateSolutionFile(SlnGenerationOptions options)
 		{
 			LogSummary(options);
 
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildSln(options);
-			SlnWriter.WriteSlnFile(solution, options.SlnOutputPath);
+			return SlnWriter.WriteSlnFile(solution, options.SlnOutputPath).FullName;
 		}
 
 		private void LogSummary(SlnGenerationOptions options)

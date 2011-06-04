@@ -63,6 +63,7 @@
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />
     <Compile Include="Infrastructure\SlnFileRenderer.cs" />
     <Compile Include="Infrastructure\SlnFileWriter.cs" />
+    <Compile Include="Infrastructure\VisualStudioIntegration.cs" />
     <Compile Include="Model\SlnGenerationMode.cs" />
     <Compile Include="Model\CsProj.cs" />
     <Compile Include="Infrastructure\CsProjReader.cs" />
