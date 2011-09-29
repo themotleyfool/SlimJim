@@ -2,7 +2,6 @@ Debug/
 Release/
 bin/
 obj/
-packages/
 *.user 
 *.suo
 *ReSharper*
