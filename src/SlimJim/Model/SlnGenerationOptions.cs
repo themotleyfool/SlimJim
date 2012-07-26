@@ -38,6 +38,8 @@ namespace SlimJim.Model
 		public VisualStudioVersion VisualStudioVersion { get; set; }
 		public bool IncludeEfferentAssemblyReferences { get; set; }
 		public bool ShowHelp { get; set; }
+		public bool ConvertReferences { get; set; }
+		public bool RestoreReferences { get; set; }
 		public bool OpenInVisualStudio { get; set; }
 
 		public List<string> AdditionalSearchPaths

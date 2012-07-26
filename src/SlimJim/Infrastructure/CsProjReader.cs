@@ -50,7 +50,8 @@ namespace SlimJim.Infrastructure
 		private List<string> ReadReferencedAssemblyNames(XElement xml)
 		{
 			List<string> rawAssemblyNames = (from r in xml.DescendantsAndSelf(Ns + "Reference")
-														select r.Attribute("Include").Value).ToList();
+											 where r.Parent.Name == Ns + "ItemGroup"
+											 select r.Attribute("Include").Value).ToList();
 			List<string> unQualifiedAssemblyNames = rawAssemblyNames.ConvertAll(UnQualify);
 			return unQualifiedAssemblyNames;
 		}

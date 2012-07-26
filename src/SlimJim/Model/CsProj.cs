@@ -16,6 +16,11 @@ namespace SlimJim.Model
 		public List<string> ReferencedAssemblyNames { get; set; }
 		public List<string> ReferencedProjectGuids { get; set; }
 
+		public string ProjectName
+		{
+			get { return System.IO.Path.GetFileNameWithoutExtension(Path); }
+		}
+
 		public void ReferencesAssemblies(params CsProj[] assemblyReferences)
 		{
 			foreach (CsProj reference in assemblyReferences)

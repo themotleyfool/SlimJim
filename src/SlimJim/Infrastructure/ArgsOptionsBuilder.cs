@@ -50,6 +50,10 @@ namespace SlimJim.Infrastructure
 			            			v => options.ShowHelp = true },
 			            		{ "i|ignore=", "ignore directories whose name matches the given {REGEX_PATTERN} (repeat for multiple ignores)", 
 			            			v => options.AddIgnoreDirectoryPatterns(v) },
+			            		{ "c|convert", "convert assembly references in csproj files to project references", 
+			            			v => options.ConvertReferences = true },
+			            		{ "u|unconvert", "unconvert (restore) assembly references that were previously converted", 
+			            			v => options.RestoreReferences = true },
 								{ "open", "open the solution in Visual Studio", 
 			            			v => options.OpenInVisualStudio = true }
 			            	};

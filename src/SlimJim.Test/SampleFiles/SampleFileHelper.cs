@@ -21,10 +21,7 @@ namespace SlimJim.Test.SampleFiles
 		{
 			FileInfo file = GetFile(name, fileType);
 
-			using (var fileReader =file.OpenText())
-			{
-				return fileReader.ReadToEnd();
-			}
+			return File.ReadAllText(file.FullName);
 		}
 
 		private static FileInfo GetFile(string name, string fileType)

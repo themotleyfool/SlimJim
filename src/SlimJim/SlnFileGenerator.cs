@@ -25,6 +25,16 @@ namespace SlimJim
 
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildSln(options);
+
+			if (options.ConvertReferences)
+			{
+				new ReferenceConverter().ConvertToProjectReferences(solution);
+			}
+			else if (options.RestoreReferences)
+			{
+				new ReferenceConverter().RestoreAssemblyReferences(solution);
+			}
+
 			return SlnWriter.WriteSlnFile(solution, options.SlnOutputPath).FullName;
 		}
 

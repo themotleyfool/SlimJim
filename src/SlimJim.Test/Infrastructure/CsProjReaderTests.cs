@@ -36,6 +36,14 @@ namespace SlimJim.Test.Infrastructure
 		}
 
 		[Test]
+		public void IgnoresNestedReferences()
+		{
+			CsProj project = GetProject("ConvertedReference");
+
+			Assert.That(project.ReferencedAssemblyNames, Is.Not.Contains("log4net"));
+		}
+
+		[Test]
 		public void TakesOnlyNameOfFullyQualifiedAssemblyName()
 		{
 			CsProj project = GetProject("FQAssemblyName");
