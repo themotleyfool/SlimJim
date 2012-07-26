@@ -71,8 +71,8 @@ namespace SlimJim.Test.Infrastructure
 		{
 			renderer = new SlnFileRenderer(solution);
 
-			string actualContents = renderer.Render();
-			string expectedContents = SampleFileHelper.GetSlnFileContents(solution.Name);
+			string actualContents = renderer.Render().Replace("\r\n", "\n");
+			string expectedContents = SampleFileHelper.GetSlnFileContents(solution.Name).Replace("\r\n", "\n");
 
 			Assert.That(actualContents, Is.EqualTo(expectedContents));
 		}
