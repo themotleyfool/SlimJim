@@ -22,6 +22,8 @@ Invocation
 * `--all`								Optional; indicates that all efferent assembly references should be included in the solution. By default, they are omitted.
 * `--ignore`							Optional; indicates that directories with names matching the given regex pattern will be ignored. Repeat for multiple patterns.
 * `--open`								Optional; opens the solution in Visual Studio after generating it.
+* `--convert`							Optional; modifies relevant csproj files to use Project References instead of Assembly References.
+* `--unconvert`							Optional; reverses changes made by --convert flag.
 
 
 Upcoming features
