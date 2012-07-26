@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using log4net.Core;
 
 namespace SlimJim.Model
 {
@@ -41,6 +42,7 @@ namespace SlimJim.Model
 		public bool ConvertReferences { get; set; }
 		public bool RestoreReferences { get; set; }
 		public bool OpenInVisualStudio { get; set; }
+		public Level LoggingThreshold { get; set; }
 
 		public List<string> AdditionalSearchPaths
 		{

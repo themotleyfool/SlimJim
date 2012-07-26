@@ -27,16 +27,16 @@ namespace SlimJim
 			if (options.ShowHelp)
 			{
 				optionsBuilder.WriteHelpMessage();
+				return;
 			}
-			else
-			{
-				var solutionPath = fileGenerator.GenerateSolutionFile(options);
+
+			consoleAppender.Threshold = options.LoggingThreshold;
+			var solutionPath = fileGenerator.GenerateSolutionFile(options);
 				
-				if (options.OpenInVisualStudio)
-				{
-					log.InfoFormat("Opening {0} in Visual Studio {1}", solutionPath, options.VisualStudioVersion.Year);
-					VisualStudioIntegration.OpenSolution(solutionPath, options.VisualStudioVersion);
-				}
+			if (options.OpenInVisualStudio)
+			{
+				log.InfoFormat("Opening {0} in Visual Studio {1}", solutionPath, options.VisualStudioVersion.Year);
+				VisualStudioIntegration.OpenSolution(solutionPath, options.VisualStudioVersion);
 			}
 		}
 	}

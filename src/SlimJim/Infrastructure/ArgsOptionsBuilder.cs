@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using log4net;
 using NDesk.Options;
 using SlimJim.Model;
+using log4net.Core;
 
 namespace SlimJim.Infrastructure
 {
@@ -31,32 +33,38 @@ namespace SlimJim.Infrastructure
 		private void ProcessArguments(string[] args)
 		{
 			optionSet = new OptionSet
-			            	{
-			            		{ "t|target=", "{NAME} of a target project (repeat for multiple targets)", 
-			            			v => options.TargetProjectNames.Add(v) },
-			            		{ "r|root=", "{PATH} to the root directory where your projects reside (optional, defaults to working directory)", 
-			            			v => options.ProjectsRootDirectory = v },
-			            		{ "s|search=", "additional {PATH}(s) to search for projects to include outside of the root directory (repeat for multiple paths)",
-			            			v => options.AddAdditionalSearchPaths(v) },
-			            		{ "o|out=", "directory {PATH} where you want the .sln file written", 
-			            			v => options.SlnOutputPath = v },
-			            		{ "v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", 
-			            			v => options.VisualStudioVersion = TryParseVersionNumber(v) },
-			            		{ "n|name=", "alternate {NAME} for solution file", 
-			            			v => options.SolutionName = v},
-			            		{ "a|all", "include all efferent assembly references (omitted by default)", 
-			            			v => options.IncludeEfferentAssemblyReferences = true },
-			            		{ "h|help", "display the help screen", 
-			            			v => options.ShowHelp = true },
-			            		{ "i|ignore=", "ignore directories whose name matches the given {REGEX_PATTERN} (repeat for multiple ignores)", 
-			            			v => options.AddIgnoreDirectoryPatterns(v) },
-			            		{ "c|convert", "convert assembly references in csproj files to project references", 
-			            			v => options.ConvertReferences = true },
-			            		{ "u|unconvert", "unconvert (restore) assembly references that were previously converted", 
-			            			v => options.RestoreReferences = true },
+							{
+								{ "t|target=", "{NAME} of a target project (repeat for multiple targets)", 
+									v => options.TargetProjectNames.Add(v) },
+								{ "r|root=", "{PATH} to the root directory where your projects reside (optional, defaults to working directory)", 
+									v => options.ProjectsRootDirectory = v },
+								{ "s|search=", "additional {PATH}(s) to search for projects to include outside of the root directory (repeat for multiple paths)",
+									v => options.AddAdditionalSearchPaths(v) },
+								{ "o|out=", "directory {PATH} where you want the .sln file written", 
+									v => options.SlnOutputPath = v },
+								{ "v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", 
+									v => options.VisualStudioVersion = TryParseVersionNumber(v) },
+								{ "n|name=", "alternate {NAME} for solution file", 
+									v => options.SolutionName = v},
+								{ "a|all", "include all efferent assembly references (omitted by default)", 
+									v => options.IncludeEfferentAssemblyReferences = true },
+								{ "h|help", "display the help screen", 
+									v => options.ShowHelp = true },
+								{ "i|ignore=", "ignore directories whose name matches the given {REGEX_PATTERN} (repeat for multiple ignores)", 
+									v => options.AddIgnoreDirectoryPatterns(v) },
+								{ "c|convert", "convert assembly references in csproj files to project references", 
+									v => options.ConvertReferences = true },
+								{ "u|unconvert", "unconvert (restore) assembly references that were previously converted", 
+									v => options.RestoreReferences = true },
 								{ "open", "open the solution in Visual Studio", 
-			            			v => options.OpenInVisualStudio = true }
-			            	};
+									v => options.OpenInVisualStudio = true },
+								{ "debug", "attach debugger", 
+									v => Debugger.Launch() },
+								{ "q|quiet", "reduce logging verbosity to errors only",
+									v => options.LoggingThreshold = Level.Error },
+								{ "verbose", "increase logging verbosity to include debug messages",
+									v => options.LoggingThreshold = Level.Debug }
+							};
 
 			try
 			{
