@@ -13,28 +13,23 @@ namespace SlimJim.Infrastructure
 
 		public virtual CsProj Read(FileInfo csProjFile)
 		{
-			CsProj csProj = null;
-
 			XElement xml = LoadXml(csProjFile);
 			XElement properties = xml.Element(Ns + "PropertyGroup");
 			XElement assemblyName = properties.Element(Ns + "AssemblyName");
-			if (assemblyName != null)
+
+			if (assemblyName == null)
 			{
-				csProj = new CsProj
-					{
-						Path = csProjFile.FullName,
-						AssemblyName = assemblyName.Value,
-						Guid = properties.Element(Ns + "ProjectGuid").Value,
-						ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml),
-						ReferencedProjectGuids = ReadReferencedProjectGuids(xml)
-					};
-			}
-			else
-			{
-				Console.WriteLine("Failed to read project file " + csProjFile.Name);
+				return null;
 			}
 
-			return csProj;
+			return new CsProj
+			{
+				Path = csProjFile.FullName,
+				AssemblyName = assemblyName.Value,
+				Guid = properties.Element(Ns + "ProjectGuid").Value,
+				ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml),
+				ReferencedProjectGuids = ReadReferencedProjectGuids(xml)
+			};
 		}
 
 		private XElement LoadXml(FileInfo csProjFile)

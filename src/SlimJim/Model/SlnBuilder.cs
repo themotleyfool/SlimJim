@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using log4net;
 
 namespace SlimJim.Model
 {
 	public class SlnBuilder
 	{
-		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(typeof(SlnFileGenerator));
+
 		private readonly List<CsProj> projectsList;
 		private Sln builtSln;
 		private static SlnBuilder overriddenBuilder;
@@ -19,11 +19,12 @@ namespace SlimJim.Model
 
 		public virtual Sln BuildSln(SlnGenerationOptions options)
 		{
-			this.options = options;
-			builtSln = new Sln(options.SolutionName)
-			 {
-				 Version = options.VisualStudioVersion
-			 };
+	        this.options = options;
+	        builtSln = new Sln(options.SolutionName)
+				{
+					Version = options.VisualStudioVersion,
+					ProjectsRootDirectory = options.ProjectsRootDirectory
+				};
 
 			AddProjectsToSln(options);
 
@@ -49,6 +50,11 @@ namespace SlimJim.Model
 			foreach (string targetProjectName in options.TargetProjectNames)
 			{
 				CsProj rootProject = AddAssemblySubtree(targetProjectName);
+
+				if (rootProject == null)
+				{
+					Log.WarnFormat("Project {0} not found.", targetProjectName);
+				}
 
 				AddAfferentReferencesToProject(rootProject);
 			}
