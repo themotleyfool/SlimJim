@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimJim", "SlimJim\SlimJim.csproj", "{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}"
@@ -17,12 +17,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|x86.ActiveCfg = Debug|x86
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Debug|x86.Build.0 = Debug|x86
-		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|Any CPU.ActiveCfg = Release|x86
+		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}.Release|x86.ActiveCfg = Release|x86
@@ -33,9 +35,7 @@ Global
 		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F28F7DCF-30E4-40DF-9FCF-FFFA17ECBA7F}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE8C39F4-0D96-4315-A1BA-13B8ABD85396}.Debug|Any CPU.ActiveCfg = Debug
 		{CE8C39F4-0D96-4315-A1BA-13B8ABD85396}.Debug|Mixed Platforms.ActiveCfg = Debug

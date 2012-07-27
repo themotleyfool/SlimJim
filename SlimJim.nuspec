@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>SlimJim</id>
+		<version>$version$</version>
+		<owners>The Motley Fool, LLC</owners>
+		<authors>Aaron Togerson, Chris Eldredge</authors>
+		<copyright>Copyright 2012 The Motley Fool, LLC</copyright>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<projectUrl>https://github.com/themotleyfool/SlimJim</projectUrl>
+		<tags>tools powertools vs2010 vs2008 msbuild productivity refactoring solution</tags>
+		<summary>SlimJim is a Visual Studio solution file generator.</summary>
+		<description>
+			SlimJim genereates Visual Studio solution files that include related projects from disparate repositories.
+		</description>
+		<releaseNotes>
+		</releaseNotes>
+	</metadata>
+	<files>
+		<file src="build\bin\release\SlimJim.exe" target="tools"/>
+		<file src="build\bin\release\SlimJim.exe.config" target="tools"/>
+		<file src="build\bin\release\Antlr3.StringTemplate.dll" target="tools"/>
+		<file src="build\bin\release\log4net.dll" target="tools"/>
+		<file src="build\bin\release\NDesk.Options.dll" target="tools"/>
+	</files>
+</package>

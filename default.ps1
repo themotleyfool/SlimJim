@@ -4,7 +4,7 @@ properties {
   $packageinfo_dir = "$base_dir"
   $debug_build_dir = "$build_dir\bin\debug"
   $release_build_dir = "$build_dir\bin\release"
-  $release_dir = "$base_dir\Release"
+  $release_dir = "$base_dir\release"
   $sln_file = "$base_dir\src\SlimJim.sln"
   $version = "1.0.0"
   $revision = ""

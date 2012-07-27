@@ -8,8 +8,18 @@ namespace SlimJim.Infrastructure
 {
 	public class SlnFileRenderer
 	{
+		private static readonly StringTemplateGroup templateGroup;
 		private readonly Sln solution;
 
+		static SlnFileRenderer()
+		{
+			var stream = typeof (SlnFileRenderer).Assembly.GetManifestResourceStream("SlimJim.Templates.SolutionTemplate.st");
+			templateGroup = new StringTemplateGroup("SlnTemplates");
+			using (stream)
+			{
+				templateGroup.DefineTemplate("SolutionTemplate", new StreamReader(stream).ReadToEnd());
+			}
+		}
 		public SlnFileRenderer(Sln solution)
 		{
 			this.solution = solution;
@@ -17,9 +27,7 @@ namespace SlimJim.Infrastructure
 
 		public string Render()
 		{
-			string templatesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates\\");
-			var templateGroup = new StringTemplateGroup("SlnTemplates", templatesPath);
-			StringTemplate slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
+			var slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
 			slnTemplate.SetAttribute("sln", solution);
 			return Environment.NewLine + slnTemplate + Environment.NewLine;
 		}
