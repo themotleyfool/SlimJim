@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\build\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Infrastructure\ArgsOptionsBuilder.cs" />
     <Compile Include="Infrastructure\CsProjRepository.cs" />
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />
