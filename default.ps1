@@ -39,7 +39,7 @@ task Compile -depends Init {
 }
 
 task Test -depends Compile -precondition { return $run_tests }{
-  Exec { & $nunitconsole "src\SlimJim.Test\bin\Debug\SlimJim.Test.dll" "/noshadow" "/result=SlimJim.Test.xml" } "nunit failed."
+  Exec { & $nunitconsole "src\SlimJim.Test\bin\Debug\SlimJim.Test.dll" "/noshadow" "/result=build\SlimJim.Test.xml" } "nunit failed."
 }
 
 task Package -depends Compile, Test {
