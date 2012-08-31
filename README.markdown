@@ -1,7 +1,11 @@
 SlimJim
 =====
 
-SlimJim is a Visual Studio solution file generator.
+SlimJim genereates Visual Studio solution files that include related projects from disparate repositories.
+
+To install SlimJim, run the following command in the [NuGet](http://nuget.org/) Package Manager Console
+
+    PM> Install-Package SlimJim
 
 SlimJim is meant to be invoked from the command line. It will search a given directory recursively for .csproj files, and include them in a new solution file if:
 
