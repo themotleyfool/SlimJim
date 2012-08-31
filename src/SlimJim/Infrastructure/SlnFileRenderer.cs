@@ -29,7 +29,7 @@ namespace SlimJim.Infrastructure
 		{
 			var slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
 			slnTemplate.SetAttribute("sln", solution);
-			return Environment.NewLine + slnTemplate + Environment.NewLine;
+			return slnTemplate.ToString();
 		}
 	}
 }
