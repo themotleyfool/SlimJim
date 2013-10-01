@@ -13,14 +13,14 @@ namespace SlimJim.Infrastructure
 
 		public virtual CsProj Read(FileInfo csProjFile)
 		{
-			XElement xml = LoadXml(csProjFile);
-			XElement properties = xml.Element(Ns + "PropertyGroup");
-			XElement assemblyName = properties.Element(Ns + "AssemblyName");
+			var xml = LoadXml(csProjFile);
+			var properties = xml.Element(Ns + "PropertyGroup");
 
-			if (assemblyName == null)
-			{
-				return null;
-			}
+			if (properties == null) return null;
+
+			var assemblyName = properties.Element(Ns + "AssemblyName");
+
+			if (assemblyName == null) return null;
 
 			return new CsProj
 			{
@@ -35,7 +35,7 @@ namespace SlimJim.Infrastructure
 		private XElement LoadXml(FileInfo csProjFile)
 		{
 			XElement xml;
-			using (StreamReader reader = csProjFile.OpenText())
+			using (var reader = csProjFile.OpenText())
 			{
 				xml = XElement.Load(reader);
 			}
@@ -44,10 +44,10 @@ namespace SlimJim.Infrastructure
 
 		private List<string> ReadReferencedAssemblyNames(XElement xml)
 		{
-			List<string> rawAssemblyNames = (from r in xml.DescendantsAndSelf(Ns + "Reference")
+			var rawAssemblyNames = (from r in xml.DescendantsAndSelf(Ns + "Reference")
 											 where r.Parent.Name == Ns + "ItemGroup"
 											 select r.Attribute("Include").Value).ToList();
-			List<string> unQualifiedAssemblyNames = rawAssemblyNames.ConvertAll(UnQualify);
+			var unQualifiedAssemblyNames = rawAssemblyNames.ConvertAll(UnQualify);
 			return unQualifiedAssemblyNames;
 		}
 
