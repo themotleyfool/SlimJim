@@ -12,10 +12,10 @@ namespace SlimJim
 		public static void Main(string[] args)
 		{
 			var consoleAppender = new ConsoleAppender()
-			                      	{
-			                      		Layout = new PatternLayout("%message%newline"),
-			                      		Threshold = Level.Info
-			                      	};
+								  	{
+								  		Layout = new PatternLayout("%message%newline"),
+								  		Threshold = Level.Info
+								  	};
 			log4net.Config.BasicConfigurator.Configure(consoleAppender);
 
 			var log = LogManager.GetLogger(typeof(SlnFileGenerator));

@@ -18,8 +18,9 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(project.Guid, Is.EqualTo("{4A37C916-5AA3-4C12-B7A8-E5F878A5CDBA}"));
 			Assert.That(project.AssemblyName, Is.EqualTo("MyProject"));
 			Assert.That(project.Path, Is.EqualTo(file.FullName));
+			Assert.That(project.TargetFrameworkVersion, Is.EqualTo("v4.0"));
 			Assert.That(project.ReferencedAssemblyNames, Is.EqualTo(new[]
-			                                                       	{
+																   	{
 																							"System",
 																							"System.Core",
 																							"System.Xml.Linq",
@@ -27,12 +28,12 @@ namespace SlimJim.Test.Infrastructure
 																							"Microsoft.CSharp",
 																							"System.Data",
 																							"System.Xml"
-			                                                       	}));
+																   	}));
 			Assert.That(project.ReferencedProjectGuids, Is.EqualTo(new[]
-			                                                      	{
+																  	{
 																							"{99036BB6-4F97-4FCC-AF6C-0345A5089099}",
 																							"{69036BB3-4F97-4F9C-AF2C-0349A5049060}"
-			                                                      	}));
+																  	}));
 		}
 
 		[Test]

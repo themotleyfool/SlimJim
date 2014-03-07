@@ -60,13 +60,13 @@ namespace SlimJim.Test.Infrastructure
 				});
 		}
 
-        [Test]
-        public void IgnoresFileName()
-        {
-            finder.IgnorePatterns("TheirProject3.csproj");
-            projectFiles = finder.FindAllProjectFiles(SampleFileSystemPath);
+		[Test]
+		public void IgnoresFileName()
+		{
+			finder.IgnorePatterns("TheirProject3.csproj");
+			projectFiles = finder.FindAllProjectFiles(SampleFileSystemPath);
 
-            AssertFilesMatching(new[]
+			AssertFilesMatching(new[]
 				{
 					@"MyProject\MyProject.csproj",
 					@"Ours\OurProject1\OurProject1.csproj",
@@ -74,9 +74,9 @@ namespace SlimJim.Test.Infrastructure
    					@"Theirs\TheirProject1\TheirProject1.csproj",
 					@"Theirs\TheirProject2\TheirProject2.csproj",
 				});
-        }
+		}
 
-        [Test]
+		[Test]
 		public void IgnoresRelativePathWithDifferentCase()
 		{
 			finder.IgnorePatterns("ThEiRs");

@@ -30,7 +30,24 @@ namespace SlimJim.Test.Model
 			{
 				AssemblyName = "MyProject",
 				Guid = "{E75347BE-2125-4325-818D-0ECC760F11BA}",
-				Path = @"C:\Projects\MyProject\MyProject.csproj"
+				Path = @"C:\Projects\MyProject\MyProject.csproj",
+				TargetFrameworkVersion = "v3.5"
+			};
+
+		public readonly CsProj MyMultiFrameworkProject35 = new CsProj
+			{
+				AssemblyName = "MyMultiFrameworkProject",
+				Guid = "{fba80161-8315-4a8b-91a4-bff7d2f0a968}",
+				Path = @"C:\Projects\MyMultiFrameworkProject\MyMultiFrameworkProject-net35.csproj",
+				TargetFrameworkVersion = "v3.5"
+			};
+
+		public readonly CsProj MyMultiFrameworkProject40 = new CsProj
+			{
+				AssemblyName = "MyMultiFrameworkProject",
+				Guid = "{b8da3366-a3d6-4580-9b99-60aed5b01d5e}",
+				Path = @"C:\Projects\MyMultiFrameworkProject\MyMultiFrameworkProject-net40.csproj",
+				TargetFrameworkVersion = "v4.0"
 			};
 
 		public readonly CsProj Unrelated1 = new CsProj

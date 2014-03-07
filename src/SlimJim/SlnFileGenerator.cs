@@ -43,10 +43,10 @@ namespace SlimJim
 			Log.InfoFormat("SlimJim solution file generator.");
 			Log.InfoFormat("");
 			Log.InfoFormat("----------------------------------------");
-			Log.InfoFormat("Target projects:             {0}", SummarizeTargetProjects(options));
-			Log.InfoFormat("Destination:                 {0}", Path.Combine(options.SlnOutputPath, options.SolutionName + ".sln"));
-			Log.InfoFormat("Visual Studio Version:       {0}", options.VisualStudioVersion);
-			Log.InfoFormat("Dinosaur:                    {0}", GetDinosaur());
+			Log.InfoFormat("Target projects:			 {0}", SummarizeTargetProjects(options));
+			Log.InfoFormat("Destination:				 {0}", Path.Combine(options.SlnOutputPath, options.SolutionName + ".sln"));
+			Log.InfoFormat("Visual Studio Version:	   {0}", options.VisualStudioVersion);
+			Log.InfoFormat("Dinosaur:					{0}", GetDinosaur());
 			Log.InfoFormat("----------------------------------------");
 			Log.InfoFormat("");
 		}

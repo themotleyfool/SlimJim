@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using log4net;
 
 namespace SlimJim.Model
@@ -19,8 +21,8 @@ namespace SlimJim.Model
 
 		public virtual Sln BuildSln(SlnGenerationOptions options)
 		{
-	        this.options = options;
-	        builtSln = new Sln(options.SolutionName)
+			this.options = options;
+			builtSln = new Sln(options.SolutionName)
 				{
 					Version = options.VisualStudioVersion,
 					ProjectsRootDirectory = options.ProjectsRootDirectory
@@ -67,18 +69,49 @@ namespace SlimJim.Model
 			projectsList.ForEach(AddProject);
 		}
 
-		private CsProj AddAssemblySubtree(string assemblyName)
+		private CsProj AddAssemblySubtree(string assemblyName, string targetFrameworkVersion = "")
 		{
-			CsProj project = FindProjectByAssemblyName(assemblyName);
+			CsProj project = FindProjectByAssemblyName(assemblyName, targetFrameworkVersion);
 
 			AddProjectAndReferences(project);
 
 			return project;
 		}
 
-		private CsProj FindProjectByAssemblyName(string assemblyName)
+		private CsProj FindProjectByAssemblyName(string assemblyName, string targetFrameworkVersion)
 		{
-			return projectsList.Find(csp => csp.AssemblyName == assemblyName);
+			var matches = projectsList.Where(p => p.AssemblyName == assemblyName).ToList();
+
+
+			if (matches.Count <= 1)
+			{
+				var single = matches.SingleOrDefault();
+				if (single != null) Log.InfoFormat("Found projects with AssemblyName {0}: {1}", assemblyName, single.Path);
+				return single;
+			}
+
+			//TODO: filter projects that don't specify version
+			if (string.IsNullOrEmpty(targetFrameworkVersion))
+			{
+				Log.WarnFormat("Found multiple projects with AssemblyName {0} and no target framework version is specified: {1}", assemblyName, string.Join(", ", matches.Select(m => m.Path)));
+				return matches.First();
+			}
+
+			var myVersion = new Version(targetFrameworkVersion.Substring(1));
+			var versions = matches
+							.Where(m => m.TargetFrameworkVersion != null && m.TargetFrameworkVersion.StartsWith("v"))
+							.ToDictionary(m => new Version(m.TargetFrameworkVersion.Substring(1)));
+
+			var closest = versions.Where(v => v.Key <= myVersion).OrderByDescending(v => v.Key).FirstOrDefault();
+
+		    if (closest.Value != null)
+		    {
+                Log.InfoFormat("Found multiple projects with AssemblyName {0}: {1} and chose {2}", assemblyName, string.Join(", ", matches.Select(m => m.Path)), closest.Value.Path);
+                return closest.Value;
+		    }
+
+            Log.WarnFormat("Found multiple projects with AssemblyName {0}: {1} and none have compatible TargetFrameworkVersion property. Choosing {2}", assemblyName, string.Join(", ", matches.Select(m => m.Path)), matches.First());
+		    return matches.First();
 		}
 
 		private void AddProjectAndReferences(CsProj project)
@@ -113,7 +146,7 @@ namespace SlimJim.Model
 		{
 			foreach (string assemblyName in project.ReferencedAssemblyNames)
 			{
-				AddAssemblySubtree(assemblyName);
+				AddAssemblySubtree(assemblyName, project.TargetFrameworkVersion);
 			}
 		}
 

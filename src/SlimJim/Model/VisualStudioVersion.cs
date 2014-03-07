@@ -34,7 +34,7 @@ namespace SlimJim.Model
 			var versions = new[] {vs2008, vs2010};
 
 			VisualStudioVersion version = versions.FirstOrDefault(v => versionNumber.Contains(v.Year)) ??
-			                              VisualStudioVersion.VS2010;
+										  VisualStudioVersion.VS2010;
 
 			return version;
 		}

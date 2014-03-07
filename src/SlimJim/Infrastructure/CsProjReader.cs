@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -7,7 +6,7 @@ using SlimJim.Model;
 
 namespace SlimJim.Infrastructure
 {
-	public class CsProjReader
+    public class CsProjReader
 	{
 		private static readonly XNamespace Ns = "http://schemas.microsoft.com/developer/msbuild/2003";
 
@@ -26,7 +25,8 @@ namespace SlimJim.Infrastructure
 			{
 				Path = csProjFile.FullName,
 				AssemblyName = assemblyName.Value,
-				Guid = properties.Element(Ns + "ProjectGuid").Value,
+				Guid = properties.Element(Ns + "ProjectGuid").ValueOrDefault(),
+				TargetFrameworkVersion = properties.Element(Ns + "TargetFrameworkVersion").ValueOrDefault(),
 				ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml),
 				ReferencedProjectGuids = ReadReferencedProjectGuids(xml)
 			};

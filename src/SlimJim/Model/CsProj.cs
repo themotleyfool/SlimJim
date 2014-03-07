@@ -13,6 +13,7 @@ namespace SlimJim.Model
 		public string Guid { get; set; }
 		public string Path { get; set; }
 		public string AssemblyName { get; set; }
+		public string TargetFrameworkVersion { get; set; }
 		public List<string> ReferencedAssemblyNames { get; set; }
 		public List<string> ReferencedProjectGuids { get; set; }
 
@@ -43,10 +44,10 @@ namespace SlimJim.Model
 			}
 		}
 
-        public override string ToString()
-        {
-            return base.ToString() + 
-                string.Format(@" {{AssemblyName=""{0}"", Guid=""{1}"", Path=""{2}""}}", AssemblyName, Guid, Path);
-        }
+		public override string ToString()
+		{
+			return base.ToString() + 
+				string.Format(@" {{AssemblyName=""{0}"", Guid=""{1}"", Path=""{2}""}}", AssemblyName, Guid, Path);
+		}
 	}
 }

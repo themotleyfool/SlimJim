@@ -6,7 +6,7 @@ namespace SlimJim.Test.Model.SlnBuilder
 	[TestFixture]
 	public class SlnBuilderTests : SlnBuilderTestFixture
 	{
-	    [Test]
+		[Test]
 		public void SlnNameIsEqualToRootProjectName()
 		{
 			GeneratePartialGraphSolution(new[] { targetProjectName });
@@ -126,6 +126,25 @@ namespace SlimJim.Test.Model.SlnBuilder
 			projects.OurProject2.ReferencesAssemblies(projects.MyProject);
 			GeneratePartialGraphSolution(new[] { targetProjectName }, projects.MyProject, projects.OurProject1, projects.OurProject2);
 			Assert.That(solution.Projects, Is.EqualTo(new[] {projects.MyProject, projects.OurProject1, projects.OurProject2}));
+		}
+
+		[Test]
+		public void AfferentAssemblyReferencesSelectsTargetFramework()
+		{
+			projects.MyProject.ReferencesAssemblies(projects.MyMultiFrameworkProject35);
+			options.IncludeEfferentAssemblyReferences = true;
+			GeneratePartialGraphSolution(new[] { targetProjectName }, projects.MyProject, projects.MyMultiFrameworkProject35, projects.MyMultiFrameworkProject40);
+			Assert.That(solution.Projects, Is.EqualTo(new[] { projects.MyProject, projects.MyMultiFrameworkProject35 }));
+		}
+
+		[Test]
+		public void AfferentAssemblyReferencesSelectsNearestTargetFramework()
+		{
+			projects.MyProject.TargetFrameworkVersion = "v4.5";
+			projects.MyProject.ReferencesAssemblies(projects.MyMultiFrameworkProject40);
+			options.IncludeEfferentAssemblyReferences = true;
+			GeneratePartialGraphSolution(new[] { targetProjectName }, projects.MyProject, projects.MyMultiFrameworkProject35, projects.MyMultiFrameworkProject40);
+			Assert.That(solution.Projects, Is.EqualTo(new[] { projects.MyProject, projects.MyMultiFrameworkProject40 }));
 		}
 
 		[Test]

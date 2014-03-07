@@ -43,9 +43,9 @@ namespace SlimJim.Infrastructure
 		private void SearchDirectoryForProjects(DirectoryInfo directory, List<FileInfo> files)
 		{
 			FileInfo[] projects = directory
-                                    .GetFiles("*.csproj")
-                                    .Where(f => !PathIsIgnored(f.Name))
-                                    .ToArray();
+									.GetFiles("*.csproj")
+									.Where(f => !PathIsIgnored(f.Name))
+									.ToArray();
 
 			if (projects.Length > 0)
 			{
@@ -65,17 +65,19 @@ namespace SlimJim.Infrastructure
 			}
 		}
 
-		private void AddProjectFile(FileInfo[] projects, List<FileInfo> files)
+		private void AddProjectFile(IEnumerable<FileInfo> projects, List<FileInfo> files)
 		{
-			files.Add(projects[0]);
-
-			Log.Debug(projects[0].FullName);
+			foreach (var project in projects)
+			{
+				files.Add(project);
+				Log.Debug(project);
+			}
 		}
 
-	    public bool PathIsIgnored(DirectoryInfo dir)
-	    {
-	        return PathIsIgnored(dir.Name);
-	    }
+		public bool PathIsIgnored(DirectoryInfo dir)
+		{
+			return PathIsIgnored(dir.Name);
+		}
 
 		public bool PathIsIgnored(string name)
 		{
