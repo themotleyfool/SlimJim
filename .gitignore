@@ -16,3 +16,6 @@ Data
 *.exe
 *.msi
 *.ncrunchsolution*
+src/packages/
+*.ncrunch*
+*.cache
