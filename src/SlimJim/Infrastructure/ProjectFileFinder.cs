@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using log4net;
@@ -31,7 +32,7 @@ namespace SlimJim.Infrastructure
 		{
 			var files = new List<FileInfo>();
 
-			if (!PathIsIgnored(directory))
+			if (!PathIsIgnored(directory.Name))
 			{
 				SearchDirectoryForProjects(directory, files);
 			}
@@ -41,7 +42,10 @@ namespace SlimJim.Infrastructure
 
 		private void SearchDirectoryForProjects(DirectoryInfo directory, List<FileInfo> files)
 		{
-			FileInfo[] projects = directory.GetFiles("*.csproj");
+			FileInfo[] projects = directory
+                                    .GetFiles("*.csproj")
+                                    .Where(f => !PathIsIgnored(f.Name))
+                                    .ToArray();
 
 			if (projects.Length > 0)
 			{
@@ -68,9 +72,14 @@ namespace SlimJim.Infrastructure
 			Log.Debug(projects[0].FullName);
 		}
 
-		public bool PathIsIgnored(DirectoryInfo directory)
+	    public bool PathIsIgnored(DirectoryInfo dir)
+	    {
+	        return PathIsIgnored(dir.Name);
+	    }
+
+		public bool PathIsIgnored(string name)
 		{
-			return ignorePatterns.Exists(p => p.IsMatch(directory.Name));
+			return ignorePatterns.Exists(p => p.IsMatch(name));
 		}
 
 		public virtual void IgnorePatterns(params string[] patterns)
