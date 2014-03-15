@@ -42,7 +42,7 @@ namespace SlimJim.Infrastructure
 									v => options.AddAdditionalSearchPaths(v) },
 								{ "o|out=", "directory {PATH} where you want the .sln file written", 
 									v => options.SlnOutputPath = v },
-								{ "v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", 
+								{ "v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default, 2012)", 
 									v => options.VisualStudioVersion = TryParseVersionNumber(v) },
 								{ "n|name=", "alternate {NAME} for solution file", 
 									v => options.SolutionName = v},
