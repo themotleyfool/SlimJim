@@ -5,7 +5,7 @@ using System.Text;
 using log4net;
 using NDesk.Options;
 using SlimJim.Model;
-using log4net.Core;
+using SlimJim.Util;
 
 namespace SlimJim.Infrastructure
 {
@@ -42,7 +42,7 @@ namespace SlimJim.Infrastructure
 									v => options.AddAdditionalSearchPaths(v) },
 								{ "o|out=", "directory {PATH} where you want the .sln file written", 
 									v => options.SlnOutputPath = v },
-								{ "v|version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", 
+								{ "version=", "Visual Studio {VERSION} compatibility (2008, 2010 default)", 
 									v => options.VisualStudioVersion = TryParseVersionNumber(v) },
 								{ "n|name=", "alternate {NAME} for solution file", 
 									v => options.SolutionName = v},
@@ -60,10 +60,10 @@ namespace SlimJim.Infrastructure
 									v => options.OpenInVisualStudio = true },
 								{ "debug", "attach debugger", 
 									v => Debugger.Launch() },
-								{ "q|quiet", "reduce logging verbosity to errors only",
-									v => options.LoggingThreshold = Level.Error },
-								{ "verbose", "increase logging verbosity to include debug messages",
-									v => options.LoggingThreshold = Level.Debug }
+								{ "q|quiet", "reduce logging verbosity (can specify multiple times)",
+									v => options.LoggingThreshold = options.LoggingThreshold.DecreaseVerbosity() },
+								{ "v|verbose", "increase logging verbosity (can specify multiple times)",
+									v => options.LoggingThreshold = options.LoggingThreshold.IncreaseVerbosity() }
 							};
 
 			try

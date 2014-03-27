@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using log4net;
 using log4net.Appender;
+using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using SlimJim.Infrastructure;
@@ -11,12 +12,7 @@ namespace SlimJim
 	{
 		public static void Main(string[] args)
 		{
-			var consoleAppender = new ConsoleAppender()
-								  	{
-								  		Layout = new PatternLayout("%message%newline"),
-								  		Threshold = Level.Info
-								  	};
-			log4net.Config.BasicConfigurator.Configure(consoleAppender);
+			var consoleAppender = ConfigureLogging();
 
 			var log = LogManager.GetLogger(typeof(SlnFileGenerator));
 			var fileGenerator = new SlnFileGenerator();
@@ -38,6 +34,23 @@ namespace SlimJim
 				log.InfoFormat("Opening {0} in Visual Studio {1}", solutionPath, options.VisualStudioVersion.Year);
 				VisualStudioIntegration.OpenSolution(solutionPath, options.VisualStudioVersion);
 			}
+		}
+
+		private static ColoredConsoleAppender ConfigureLogging()
+		{
+			var appender = new ColoredConsoleAppender
+			{
+				Threshold = Level.All,
+				Layout = new PatternLayout("%message%newline"),
+			};
+			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Info, ForeColor = ColoredConsoleAppender.Colors.White });
+			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Debug, ForeColor = ColoredConsoleAppender.Colors.Cyan });
+			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Warn, ForeColor = ColoredConsoleAppender.Colors.Yellow | ColoredConsoleAppender.Colors.HighIntensity });
+			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Error, ForeColor = ColoredConsoleAppender.Colors.Red | ColoredConsoleAppender.Colors.HighIntensity });
+			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Fatal, ForeColor = ColoredConsoleAppender.Colors.White | ColoredConsoleAppender.Colors.HighIntensity, BackColor = ColoredConsoleAppender.Colors.Red });
+			appender.ActivateOptions();
+			BasicConfigurator.Configure(appender);
+			return appender;
 		}
 	}
 }

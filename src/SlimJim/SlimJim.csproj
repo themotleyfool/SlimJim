@@ -85,6 +85,7 @@
     <Compile Include="Model\Sln.cs" />
     <Compile Include="Model\SlnBuilder.cs" />
     <Compile Include="SlnFileGenerator.cs" />
+    <Compile Include="Util\LevelExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\SolutionTemplate.st" />

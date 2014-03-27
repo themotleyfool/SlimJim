@@ -23,6 +23,7 @@ namespace SlimJim.Model
 			ignoreDirectoryPatterns = new List<string>();
 			TargetProjectNames = new List<string>();
 			VisualStudioVersion = VisualStudioVersion.VS2012;
+			LoggingThreshold = Level.Info;
 		}
 
 		public List<string> TargetProjectNames { get; private set; }

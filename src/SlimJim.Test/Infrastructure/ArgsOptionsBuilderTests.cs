@@ -1,3 +1,4 @@
+using log4net.Core;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Model;
@@ -151,6 +152,30 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--open" }, WorkingDirectory);
 
 			Assert.That(options.OpenInVisualStudio, Is.True, "OpenInVisualStudio");
+		}
+
+		[Test]
+		public void DefaultThresholdIsInfo()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new string[0], WorkingDirectory);
+
+			Assert.That(options.LoggingThreshold, Is.EqualTo(Level.Info));
+		}
+
+		[Test]
+		public void ExtraVerbose()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "-vv" }, WorkingDirectory);
+
+			Assert.That(options.LoggingThreshold, Is.EqualTo(Level.Trace));
+		}
+
+		[Test]
+		public void Quiet()
+		{
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "-q" }, WorkingDirectory);
+
+			Assert.That(options.LoggingThreshold, Is.EqualTo(Level.Warn));
 		}
 	}
 }
