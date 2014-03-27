@@ -28,13 +28,13 @@ Invocation
 * `--open`								Optional; opens the solution in Visual Studio after generating it.
 * `--convert`							Optional; modifies relevant csproj files to use Project References instead of Assembly References.
 * `--unconvert`							Optional; reverses changes made by --convert flag.
-
+* `--fixhintpaths`						Optional; adjust HintPath metadata in relevant csproj files to point to directory relative to generated Solution.
+* `--restorehintpaths`					Optional; reverses changes made by --fixhintpaths flag.
 
 Upcoming features
 -----------------
 
 * .slim file in your projects root directory can contain details for generation of one or more solution files. This will allow for simple invocation, e.g. "C:\MyProjects>slimjim".
-* Generate solution file for entire project graph.
 
 Known issues 
 ------------
