@@ -16,6 +16,7 @@ namespace SlimJim.Model
 		public string TargetFrameworkVersion { get; set; }
 		public List<string> ReferencedAssemblyNames { get; set; }
 		public List<string> ReferencedProjectGuids { get; set; }
+		public bool UsesMSBuildPackageRestore { get; set; }
 
 		public string ProjectName
 		{

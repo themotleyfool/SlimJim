@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -6,7 +7,7 @@ using SlimJim.Model;
 
 namespace SlimJim.Infrastructure
 {
-    public class CsProjReader
+	public class CsProjReader
 	{
 		private static readonly XNamespace Ns = "http://schemas.microsoft.com/developer/msbuild/2003";
 
@@ -28,7 +29,8 @@ namespace SlimJim.Infrastructure
 				Guid = properties.Element(Ns + "ProjectGuid").ValueOrDefault(),
 				TargetFrameworkVersion = properties.Element(Ns + "TargetFrameworkVersion").ValueOrDefault(),
 				ReferencedAssemblyNames = ReadReferencedAssemblyNames(xml),
-				ReferencedProjectGuids = ReadReferencedProjectGuids(xml)
+				ReferencedProjectGuids = ReadReferencedProjectGuids(xml),
+				UsesMSBuildPackageRestore = FindImportedNuGetTargets(xml)
 			};
 		}
 
@@ -63,5 +65,14 @@ namespace SlimJim.Infrastructure
 			return (from pr in xml.DescendantsAndSelf(Ns + "ProjectReference")
 					  select pr.Element(Ns + "Project").Value).ToList();
 		}
+
+		private bool FindImportedNuGetTargets(XElement xml)
+		{
+			var importPaths = (from import in xml.DescendantsAndSelf(Ns + "Import")
+					select import.Attribute("Project").Value);
+			return importPaths.Any(p => p.EndsWith(@"\.nuget\nuget.targets", StringComparison.InvariantCultureIgnoreCase));
+		}
+
+
 	}
 }
