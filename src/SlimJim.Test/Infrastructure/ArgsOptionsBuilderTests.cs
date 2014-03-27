@@ -89,7 +89,7 @@ namespace SlimJim.Test.Infrastructure
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "dumb" }, WorkingDirectory);
 
-			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2010));
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2012));
 		}
 
 		[Test]

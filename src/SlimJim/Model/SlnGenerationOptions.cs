@@ -22,7 +22,7 @@ namespace SlimJim.Model
 			additionalSearchPaths = new List<string>();
 			ignoreDirectoryPatterns = new List<string>();
 			TargetProjectNames = new List<string>();
-			VisualStudioVersion = VisualStudioVersion.VS2010;
+			VisualStudioVersion = VisualStudioVersion.VS2012;
 		}
 
 		public List<string> TargetProjectNames { get; private set; }
