@@ -19,3 +19,4 @@ Data
 src/packages/
 *.ncrunch*
 *.cache
+*.user
