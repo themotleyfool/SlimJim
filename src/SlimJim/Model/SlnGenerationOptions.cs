@@ -42,6 +42,8 @@ namespace SlimJim.Model
 		public bool ShowHelp { get; set; }
 		public bool ConvertReferences { get; set; }
 		public bool RestoreReferences { get; set; }
+		public bool FixHintPaths { get; set; }
+		public bool RestoreHintPaths { get; set; }
 		public bool OpenInVisualStudio { get; set; }
 		public Level LoggingThreshold { get; set; }
 

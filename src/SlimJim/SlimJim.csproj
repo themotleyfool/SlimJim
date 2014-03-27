@@ -65,6 +65,8 @@
     <Compile Include="..\..\build\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="CsProjConverter.cs" />
+    <Compile Include="HintPathConverter.cs" />
     <Compile Include="Infrastructure\ArgsOptionsBuilder.cs" />
     <Compile Include="Infrastructure\CsProjRepository.cs" />
     <Compile Include="Infrastructure\ProjectFileFinder.cs" />

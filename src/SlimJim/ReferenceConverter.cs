@@ -7,12 +7,8 @@ using log4net;
 
 namespace SlimJim
 {
-	public class ReferenceConverter
+	public class ReferenceConverter : CsProjConverter
 	{
-		private static readonly ILog Log = LogManager.GetLogger(typeof(ReferenceConverter));
-
-		private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
-
 		public void ConvertToProjectReferences(Sln solution)
 		{
 			var projectsByName = solution.Projects.ToDictionary(p => p.AssemblyName, p => p);
@@ -37,18 +33,15 @@ namespace SlimJim
 
 		private void RestoreAssemblyReferencesInProject(CsProj project)
 		{
-			var doc = new XmlDocument();
-			doc.Load(project.Path);
+			var doc = LoadProject(project);
 			var nav = doc.CreateNavigator();
-			var nsMgr = new XmlNamespaceManager(doc.NameTable);
-			nsMgr.AddNamespace("msb", MSBuildXmlNamespace);
 
 			XPathNavigator projectReference;
 
 			while ((projectReference = nav.SelectSingleNode("//msb:ProjectReference[msb:SlimJimReplacedReference and 1]", nsMgr)) != null)
 			{
 				var original = projectReference.SelectSingleNode("./msb:SlimJimReplacedReference/msb:Reference", nsMgr);
-				Log.InfoFormat("Restoring project {0} assembly reference to {1}", project.ProjectName, projectReference.GetAttribute("Include", ""));
+				log.InfoFormat("Restoring project {0} assembly reference to {1}", project.ProjectName, projectReference.GetAttribute("Include", ""));
 				projectReference.ReplaceSelf(original);
 			}
 
@@ -57,15 +50,12 @@ namespace SlimJim
 
 		private void ConvertToProjectReference(CsProj project, IEnumerable<CsProj> references)
 		{
-			var doc = new XmlDocument();
-			doc.Load(project.Path);
+			var doc = LoadProject(project);
 			var nav = doc.CreateNavigator();
-			var nsMgr = new XmlNamespaceManager(doc.NameTable);
-			nsMgr.AddNamespace("msb", MSBuildXmlNamespace);
 
 			foreach (var reference in references)
 			{
-				Log.InfoFormat("Converting project {0} assembly reference {1} to project reference {2}.", project.AssemblyName, reference.AssemblyName, reference.Path);
+				log.InfoFormat("Converting project {0} assembly reference {1} to project reference {2}.", project.AssemblyName, reference.AssemblyName, reference.Path);
 
 				var xpath = string.Format("//msb:ItemGroup/msb:Reference[substring-before(concat(@Include, ','), ',') = '{0}']", reference.AssemblyName);
 
@@ -73,7 +63,7 @@ namespace SlimJim
 
 				if (element == null)
 				{
-					Log.ErrorFormat("Failed to locate Reference element in {0} for assembly {1}.", project.Path, reference.AssemblyName);
+					log.ErrorFormat("Failed to locate Reference element in {0} for assembly {1}.", project.Path, reference.AssemblyName);
 					continue;
 				}
 

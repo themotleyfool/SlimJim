@@ -26,6 +26,11 @@ namespace SlimJim
 			List<CsProj> projects = ProjectRepository.LookupCsProjsFromDirectory(options);
 			Sln solution = SlnBuilder.GetSlnBuilder(projects).BuildSln(options);
 
+			if (options.FixHintPaths)
+			{
+				new HintPathConverter().ConvertHintPaths(solution, options);
+			}
+
 			if (options.ConvertReferences)
 			{
 				new ReferenceConverter().ConvertToProjectReferences(solution);
@@ -33,6 +38,11 @@ namespace SlimJim
 			else if (options.RestoreReferences)
 			{
 				new ReferenceConverter().RestoreAssemblyReferences(solution);
+			}
+
+			if (options.RestoreHintPaths)
+			{
+				new HintPathConverter().RestoreHintPaths(solution, options);
 			}
 
 			return SlnWriter.WriteSlnFile(solution, options.SlnOutputPath).FullName;
@@ -43,10 +53,12 @@ namespace SlimJim
 			Log.InfoFormat("SlimJim solution file generator.");
 			Log.InfoFormat("");
 			Log.InfoFormat("----------------------------------------");
-			Log.InfoFormat("Target projects:			 {0}", SummarizeTargetProjects(options));
-			Log.InfoFormat("Destination:				 {0}", Path.Combine(options.SlnOutputPath, options.SolutionName + ".sln"));
-			Log.InfoFormat("Visual Studio Version:	   {0}", options.VisualStudioVersion);
-			Log.InfoFormat("Dinosaur:					{0}", GetDinosaur());
+			Log.InfoFormat("Target projects:\t{0}", SummarizeTargetProjects(options));
+			Log.InfoFormat("Destination:\t\t{0}", Path.Combine(options.SlnOutputPath, options.SolutionName + ".sln"));
+			Log.InfoFormat("Project References:\t{0}", options.ConvertReferences ? "Convert" : options.RestoreReferences ? "Restore" : "Do Nothing");
+			Log.InfoFormat("Hint Paths:\t\t{0}", options.FixHintPaths ? "Adjust" : options.RestoreReferences ? "Restore" : "Do Nothing");
+			Log.InfoFormat("Visual Studio Version:\t{0}", options.VisualStudioVersion);
+			Log.InfoFormat("Dinosaur:\t\t{0}", GetDinosaur());
 			Log.InfoFormat("----------------------------------------");
 			Log.InfoFormat("");
 		}
