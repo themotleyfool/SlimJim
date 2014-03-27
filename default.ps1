@@ -6,7 +6,7 @@ properties {
   $release_build_dir = "$build_dir\bin\release"
   $release_dir = "$base_dir\release"
   $sln_file = "$base_dir\src\SlimJim.sln"
-  $version = "1.0.0"
+  $version = "1.1.0"
   $revision = ""
   $tools_dir = "$base_dir\Tools"
   $nunitconsole = "nunit-console.exe"
