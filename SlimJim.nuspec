@@ -17,10 +17,11 @@
 		</releaseNotes>
 	</metadata>
 	<files>
-		<file src="build\bin\release\SlimJim.exe" target="tools"/>
-		<file src="build\bin\release\SlimJim.exe.config" target="tools"/>
-		<file src="build\bin\release\Antlr3.StringTemplate.dll" target="tools"/>
-		<file src="build\bin\release\log4net.dll" target="tools"/>
-		<file src="build\bin\release\NDesk.Options.dll" target="tools"/>
+		<file src="src/SlimJim/bin/release/SlimJim.exe" target="tools"/>
+		<file src="src/SlimJim/bin/release/SlimJim.exe.config" target="tools"/>
+		<file src="src/SlimJim/bin/release/SlimJim.*db" target="tools"/>
+		<file src="src/SlimJim/bin/release/Antlr3.StringTemplate.dll" target="tools"/>
+		<file src="src/SlimJim/bin/release/log4net.dll" target="tools"/>
+		<file src="src/SlimJim/bin/release/NDesk.Options.dll" target="tools"/>
 	</files>
 </package>
