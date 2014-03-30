@@ -5,6 +5,7 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using SlimJim.Infrastructure;
+using System;
 
 namespace SlimJim
 {
@@ -36,18 +37,17 @@ namespace SlimJim
 			}
 		}
 
-		private static ColoredConsoleAppender ConfigureLogging()
+		private static ManagedColoredConsoleAppender ConfigureLogging()
 		{
-			var appender = new ColoredConsoleAppender
+			var appender = new ManagedColoredConsoleAppender
 			{
 				Threshold = Level.All,
 				Layout = new PatternLayout("%message%newline"),
 			};
-			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Info, ForeColor = ColoredConsoleAppender.Colors.White });
-			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Debug, ForeColor = ColoredConsoleAppender.Colors.Cyan });
-			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Warn, ForeColor = ColoredConsoleAppender.Colors.Yellow | ColoredConsoleAppender.Colors.HighIntensity });
-			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Error, ForeColor = ColoredConsoleAppender.Colors.Red | ColoredConsoleAppender.Colors.HighIntensity });
-			appender.AddMapping(new ColoredConsoleAppender.LevelColors { Level = Level.Fatal, ForeColor = ColoredConsoleAppender.Colors.White | ColoredConsoleAppender.Colors.HighIntensity, BackColor = ColoredConsoleAppender.Colors.Red });
+			appender.AddMapping(new ManagedColoredConsoleAppender.LevelColors { Level = Level.Info, ForeColor = ConsoleColor.Gray });
+			appender.AddMapping(new ManagedColoredConsoleAppender.LevelColors { Level = Level.Debug, ForeColor = ConsoleColor.DarkCyan});
+			appender.AddMapping(new ManagedColoredConsoleAppender.LevelColors { Level = Level.Warn, ForeColor = ConsoleColor.Yellow });
+			appender.AddMapping(new ManagedColoredConsoleAppender.LevelColors { Level = Level.Error, ForeColor = ConsoleColor.Red });
 			appender.ActivateOptions();
 			BasicConfigurator.Configure(appender);
 			return appender;
