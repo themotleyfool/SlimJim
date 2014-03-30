@@ -5,7 +5,7 @@ using SlimJim.Model;
 
 namespace SlimJim.Test.Model.SlnBuilder
 {
-	public class SlnBuilderTestFixture
+	public class SlnBuilderTestFixture : TestBase
 	{
 		protected string targetProjectName;
 		protected Sln solution;
@@ -17,7 +17,7 @@ namespace SlimJim.Test.Model.SlnBuilder
 		{
 			projects = new ProjectPrototypes();
 			targetProjectName = projects.MyProject.AssemblyName;
-			options = new SlnGenerationOptions(@"C:\Projects");
+			options = new SlnGenerationOptions(GetSamplePath("Projects"));
 		}
 
 		protected void GeneratePartialGraphSolution(string[] targetProjectNames, params CsProj[] projectsList)

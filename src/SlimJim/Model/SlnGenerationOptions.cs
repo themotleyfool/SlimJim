@@ -74,7 +74,7 @@ namespace SlimJim.Model
 				{
 					if (TargetProjectNames.Count == 1)
 					{
-						return TargetProjectNames.First();
+						return TargetProjectNames[0];
 					}
 
 					if (TargetProjectNames.Count > 1)
@@ -97,18 +97,12 @@ namespace SlimJim.Model
 
 		private string GetLastSegmentNameOfProjectsRootDirectory()
 		{
-			MatchCollection matches = Regex.Matches(ProjectsRootDirectory, @"([^\\:]+)\\?");
-			string lastSegment = DefaultSolutionName;
-			foreach (Match match in matches)
+			var dirName = new DirectoryInfo(ProjectsRootDirectory).Name;
+			if (string.IsNullOrEmpty(dirName) || dirName == "/")
 			{
-				string segmentName = match.Groups[1].Value;
-				if (segmentName != "")
-				{
-					lastSegment = segmentName;
-				}
+				return DefaultSolutionName;
 			}
-
-			return lastSegment;
+			return dirName;
 		}
 
 		public SlnGenerationMode Mode

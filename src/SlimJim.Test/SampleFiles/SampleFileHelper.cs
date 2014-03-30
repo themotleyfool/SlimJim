@@ -27,16 +27,16 @@ namespace SlimJim.Test.SampleFiles
 		private static FileInfo GetFile(string name, string fileType)
 		{
 			string sampleFolder = GetSampleFolder();
-			string typeFolder = Path.Combine(sampleFolder, fileType + @"\");
+			string typeFolder = Path.Combine(sampleFolder, fileType);
 			string filePath = Path.Combine(typeFolder, name + "." + fileType);
 			return new FileInfo(filePath);
 		}
 
 		private static string GetSampleFolder()
 		{
-			string dllFile = typeof (SampleFileHelper).Assembly.CodeBase.Substring(8);
+			string dllFile = new Uri(typeof(SampleFileHelper).Assembly.CodeBase).LocalPath;
 			string projectRoot = Directory.GetParent(dllFile).Parent.Parent.FullName;
-			return Path.Combine(projectRoot, @"SampleFiles\");
+			return Path.Combine(projectRoot, @"SampleFiles");
 		}
 
 		public static FileInfo GetCsProjFile(string name)
@@ -46,7 +46,7 @@ namespace SlimJim.Test.SampleFiles
 
 		public static string GetSampleFileSystemPath()
 		{
-			return Path.Combine(GetSampleFolder(), @"SampleFileSystem\");
+			return Path.Combine(GetSampleFolder(), @"SampleFileSystem") + Path.DirectorySeparatorChar;
 		}
 	}
 }

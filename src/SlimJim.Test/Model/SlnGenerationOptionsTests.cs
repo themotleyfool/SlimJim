@@ -1,18 +1,18 @@
 using NUnit.Framework;
 using SlimJim.Model;
+using System.IO;
 
 namespace SlimJim.Test.Model
 {
 	[TestFixture]
-	public class SlnGenerationOptionsTests
+	public class SlnGenerationOptionsTests : TestBase
 	{
 		private SlnGenerationOptions options;
-		private const string WorkingDirectory = @"C:\WorkingDir";
 
 		[Test]
 		public void SolutionOutputPathDefaultsToProjectsRootPath()
 		{
-			options = new SlnGenerationOptions(@"C:\Projects");
+			options = new SlnGenerationOptions(GetSamplePath("Projects"));
 
 			Assert.That(options.SlnOutputPath, Is.EqualTo(options.ProjectsRootDirectory));
 		}
@@ -20,8 +20,8 @@ namespace SlimJim.Test.Model
 		[Test]
 		public void SolutionOutputPathUsesGivenValueIfSet()
 		{
-			string slnOutputPath = @"C:\Projects\Solutions";
-			options = new SlnGenerationOptions(@"C:\Projects") {SlnOutputPath = slnOutputPath};
+			string slnOutputPath = GetSamplePath("Projects", "Solutions");
+			options = new SlnGenerationOptions(GetSamplePath("Projects")) {SlnOutputPath = slnOutputPath};
 
 			Assert.That(options.SlnOutputPath, Is.EqualTo(slnOutputPath));
 		}
@@ -32,44 +32,45 @@ namespace SlimJim.Test.Model
 			options = new SlnGenerationOptions(WorkingDirectory);
 			Assert.That(options.SolutionName, Is.EqualTo("WorkingDir"));
 
-			options = new SlnGenerationOptions(@"R:\Code\Projects\CSharp\SlumJim");
+			options = new SlnGenerationOptions(Path.Combine(WorkingDirectory, "SlumJim"));
 			Assert.That(options.SolutionName, Is.EqualTo("SlumJim"));
 
-			options = new SlnGenerationOptions(@"R:\Code\Projects\CSharp\SlumJim\");
+			options = new SlnGenerationOptions(Path.Combine(WorkingDirectory, "SlumJim") + Path.DirectorySeparatorChar + Path.DirectorySeparatorChar);
 			Assert.That(options.SolutionName, Is.EqualTo("SlumJim"));
 
-			options = new SlnGenerationOptions(@"R:\");
-			Assert.That(options.SolutionName, Is.EqualTo("R"));
-
-			options = new SlnGenerationOptions(@"\");
+			options = new SlnGenerationOptions(Path.DirectorySeparatorChar.ToString());
 			Assert.That(options.SolutionName, Is.EqualTo("SlimJim"));
 		}
 
 		[Test]
 		public void AdditionalSearchPathsRootedAtProjectRoot()
 		{
-			options = new SlnGenerationOptions(@"C:\Proj\Root");
-			options.AddAdditionalSearchPaths(@"..\SearchPath", @"..\..\OtherPath\Pork");
+			var root = GetSamplePath ("Proj", "Root");
+			options = new SlnGenerationOptions(root);
+			var path1 = Path.Combine("..", "SearchPath");
+			var path2 = Path.Combine("..", "..", "OtherPath", "Pork");
+			options.AddAdditionalSearchPaths (path1, path2);
 
-			Assert.That(options.AdditionalSearchPaths, Is.EqualTo(new[] {@"C:\Proj\Root\..\SearchPath", @"C:\Proj\Root\..\..\OtherPath\Pork"}));
+			Assert.That(options.AdditionalSearchPaths, Is.EqualTo(new[] {Path.Combine(root, path1), Path.Combine(root, path2)}));
 		}
 
 		[Test]
 		public void RelativeSlnOutputPathRootedAtProjectsRoot()
 		{
-			options = new SlnGenerationOptions(@"C:\Proj\Root");
+			var root = GetSamplePath ("Proj", "Root");
+			options = new SlnGenerationOptions (root);
 			options.SlnOutputPath = "Solutions";
 
-			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\Proj\Root\Solutions"));
+			Assert.That(options.SlnOutputPath, Is.EqualTo(Path.Combine(root, "Solutions")));
 		}
 
 		[Test]
 		public void RelativeProjectsRootDirIsRootedAtWorkingDir()
 		{
-			options = new SlnGenerationOptions(@"C:\WorkingDir");
-			options.ProjectsRootDirectory = @"Proj\Root";
+			options = new SlnGenerationOptions(WorkingDirectory);
+			options.ProjectsRootDirectory = Path.Combine("Proj", "Root");
 
-			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\WorkingDir\Proj\Root"));		
+			Assert.That(options.SlnOutputPath, Is.EqualTo (Path.Combine (WorkingDirectory, "Proj", "Root")));
 		}
 	}
 }

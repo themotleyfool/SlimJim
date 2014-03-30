@@ -8,9 +8,8 @@ using SlimJim.Model;
 namespace SlimJim.Test
 {
 	[TestFixture]
-	public class SlnFileGeneratorTests
+	public class SlnFileGeneratorTests : TestBase
 	{
-		private const string ProjectsDir = @"C:\Projects";
 		private const string TargetProject = "MyProject";
 		private SlnFileGenerator gen;
 		private SlnFileWriter slnWriter;
@@ -20,6 +19,14 @@ namespace SlimJim.Test
 		private readonly List<CsProj> projects = new List<CsProj>();
 		private readonly Sln createdSlnObject = new Sln("Sln");
 
+		private string ProjectsDir
+		{
+			get
+			{
+				return GetSamplePath ("Projects");
+			}
+		}
+				
 		[SetUp]
 		public void BeforeEach()
 		{

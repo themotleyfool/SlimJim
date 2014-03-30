@@ -6,11 +6,9 @@ using SlimJim.Model;
 namespace SlimJim.Test.Infrastructure
 {
 	[TestFixture]
-	public class ArgsOptionsBuilderTests
+	public class ArgsOptionsBuilderTests : TestBase
 	{
 		private SlnGenerationOptions options;
-		private bool parseErrorHandled;
-		private const string WorkingDirectory = @"C:\WorkingDir";
 
 		[Test]
 		public void TestDefaults()
@@ -29,9 +27,9 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void SpecifiedProjectsRootDirectory()
 		{
-			options = ArgsOptionsBuilder.BuildOptions(new[] { "--root", @"C:\MyProjects" }, WorkingDirectory);
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "--root", WorkingDirectory }, WorkingDirectory);
 
-			Assert.That(options.ProjectsRootDirectory, Is.EqualTo(@"C:\MyProjects"));
+			Assert.That(options.ProjectsRootDirectory, Is.EqualTo(WorkingDirectory));
 		}
 
 		[Test]
@@ -56,17 +54,20 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void SpecifiedAdditionalSearchPaths()
 		{
-			options = ArgsOptionsBuilder.BuildOptions(new[] { "--search", @"C:\OtherProjects", "--search", @"C:\MoreProjects" }, WorkingDirectory);
+			var otherDir = GetSamplePath("OtherProjects");
+			var moreProjects = GetSamplePath("MoreProjects");
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "--search", otherDir, "--search", moreProjects }, WorkingDirectory);
 
-			Assert.That(options.AdditionalSearchPaths, Is.EqualTo(new[] { @"C:\OtherProjects", @"C:\MoreProjects" }));
+			Assert.That(options.AdditionalSearchPaths, Is.EqualTo(new[] { otherDir, moreProjects }));
 		}
 
 		[Test]
 		public void SpecifiedSlnOuputPath()
 		{
-			options = ArgsOptionsBuilder.BuildOptions(new[] { "--out", @"C:\MyProjects\Sln" }, WorkingDirectory);
+			var slnDir = GetSamplePath(WorkingDirectory, "Sln");
+			options = ArgsOptionsBuilder.BuildOptions(new[] { "--out", slnDir }, WorkingDirectory);
 
-			Assert.That(options.SlnOutputPath, Is.EqualTo(@"C:\MyProjects\Sln"));
+			Assert.That(options.SlnOutputPath, Is.EqualTo(slnDir));
 		}
 
 		[Test]

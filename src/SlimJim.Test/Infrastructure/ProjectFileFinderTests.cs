@@ -3,11 +3,12 @@ using System.IO;
 using NUnit.Framework;
 using SlimJim.Infrastructure;
 using SlimJim.Test.SampleFiles;
+using System.Linq;
 
 namespace SlimJim.Test.Infrastructure
 {
 	[TestFixture]
-	public class ProjectFileFinderTests
+	public class ProjectFileFinderTests : TestBase
 	{
 		private static readonly string SampleFileSystemPath = SampleFileHelper.GetSampleFileSystemPath();
 		private ProjectFileFinder finder;
@@ -22,7 +23,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void FindsOneProjectInFolderWithCsproj()
 		{
-			projectFiles = finder.FindAllProjectFiles(Path.Combine(SampleFileSystemPath, @"MyProject\"));
+			projectFiles = finder.FindAllProjectFiles(Path.Combine(SampleFileSystemPath, @"MyProject"));
 
 			AssertFilesMatching(new[]
 				{
@@ -93,28 +94,29 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void IgnoresCertainFoldersByDefault()
 		{
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\.svn")), Is.True, ".svn folders ignored");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\doo.svn.wop")), Is.False, "don't ignore folders with .svn in the name");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\.hg")), Is.True, ".hg folders ignored");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\doo.hg.wop")), Is.False, "don't ignore folders with .hg in the name");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\.git")), Is.True, ".git folders ignored");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\doo.git.wop")), Is.False, "don't ignore folders with .git in the name");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\bin")), Is.True, "bin folders ignored");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\obing")), Is.False, "don't ignore folders with bin in the name");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\obj")), Is.True, "obj folders ignored");
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\blobjee")), Is.False, "don't ignore folders with obj in the name");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, ".svn"))), Is.True, ".svn folders ignored");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "doo.svn.wop"))), Is.False, "don't ignore folders with .svn in the name");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, ".hg"))), Is.True, ".hg folders ignored");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "doo.hg.wop"))), Is.False, "don't ignore folders with .hg in the name");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, ".git"))), Is.True, ".git folders ignored");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "doo.git.wop"))), Is.False, "don't ignore folders with .git in the name");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "bin"))), Is.True, "bin folders ignored");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "obing"))), Is.False, "don't ignore folders with bin in the name");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "obj"))), Is.True, "obj folders ignored");
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "blobjee"))), Is.False, "don't ignore folders with obj in the name");
 		}
 
 		[Test]
 		public void IgnoresReSharperFolders()
 		{
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\_ReSharper.Something")), Is.True);
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\ReSharper")), Is.True);
-			Assert.That(finder.PathIsIgnored(new DirectoryInfo(@"C:\Folder\___ReSharper___")), Is.True);
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "_ReSharper.Something"))), Is.True);
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "ReSharper"))), Is.True);
+			Assert.That(finder.PathIsIgnored(new DirectoryInfo(Path.Combine(WorkingDirectory, "___ReSharper___"))), Is.True);
 		}
 
 		private void AssertFilesMatching(string[] expectedPaths)
 		{
+			expectedPaths = expectedPaths.Select(p => p.Replace ('\\', Path.DirectorySeparatorChar)).ToArray ();
 			Assert.That(projectFiles.ConvertAll(file => file.FullName.Replace(SampleFileSystemPath, "")), Is.EqualTo(expectedPaths));
 		}
 	}

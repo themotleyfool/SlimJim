@@ -9,11 +9,24 @@ using SlimJim.Test.SampleFiles;
 namespace SlimJim.Test.Infrastructure
 {
 	[TestFixture]
-	public class CsProjRepositoryTests
+	public class CsProjRepositoryTests : TestBase
 	{
-		private const string StartPath = @"C:\Projects";
-		private const string SearchPath1 = @"C:\OtherProjects";
-		private const string SearchPath2 = @"C:\MoreProjects";
+		private string SearchPath1
+		{
+			get
+			{
+				return GetSamplePath("OtherProjects");
+			}
+		}
+
+		private string SearchPath2
+		{
+			get
+			{
+				return GetSamplePath("MoreProjects");
+			}
+		}
+
 		private readonly FileInfo file1 = SampleFileHelper.GetCsProjFile("Simple");
 		private readonly FileInfo file2 = SampleFileHelper.GetCsProjFile("Simple");
 		private readonly CsProj proj1 = new CsProj {AssemblyName = "Proj1"};
@@ -26,7 +39,7 @@ namespace SlimJim.Test.Infrastructure
 		[SetUp]
 		public void BeforeEach()
 		{
-			options = new SlnGenerationOptions(StartPath);
+			options = new SlnGenerationOptions(WorkingDirectory);
 			finder = MockRepository.GenerateStrictMock<ProjectFileFinder>();
 			reader = MockRepository.GenerateStrictMock<CsProjReader>();
 			repository = new CsProjRepository
@@ -54,7 +67,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void GetsFilesFromFinderAndProcessesThemWithCsProjReader()
 		{
-			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>{file1, file2});
+			finder.Expect(f => f.FindAllProjectFiles(WorkingDirectory)).Return(new List<FileInfo>{file1, file2});
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(proj2);
 
@@ -66,7 +79,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void GracefullyHandlesNullsFromReader()
 		{
-			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo> { file1, file2 });
+			finder.Expect(f => f.FindAllProjectFiles(WorkingDirectory)).Return(new List<FileInfo> { file1, file2 });
 			reader.Expect(r => r.Read(file1)).Return(proj1);
 			reader.Expect(r => r.Read(file2)).Return(null);
 
@@ -79,7 +92,7 @@ namespace SlimJim.Test.Infrastructure
 		public void ReadsFilesFromAdditionalSearchPathsAsWell()
 		{
 			options.AddAdditionalSearchPaths(new[] { SearchPath1, SearchPath2 });
-			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>());
+			finder.Expect(f => f.FindAllProjectFiles(WorkingDirectory)).Return(new List<FileInfo>());
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath1)).Return(new List<FileInfo>());
 			finder.Expect(f => f.FindAllProjectFiles(SearchPath2)).Return(new List<FileInfo>());
 
@@ -91,7 +104,7 @@ namespace SlimJim.Test.Infrastructure
 		{
 			options.AddIgnoreDirectoryPatterns("Folder1", "Folder2");
 			finder.Expect(f => f.IgnorePatterns(new[] {"Folder1", "Folder2"}));
-			finder.Expect(f => f.FindAllProjectFiles(StartPath)).Return(new List<FileInfo>());
+			finder.Expect(f => f.FindAllProjectFiles(WorkingDirectory)).Return(new List<FileInfo>());
 
 			repository.LookupCsProjsFromDirectory(options);
 		}
