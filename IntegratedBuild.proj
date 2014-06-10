@@ -2,27 +2,28 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<VersionPrefix>1.1.0</VersionPrefix>
+		<TestsEnabled>true</TestsEnabled>
+		<SolutionDir>$(MSBuildProjectDirectory)\src\</SolutionDir>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(APPVEYOR)' != '' ">
+		<VersionControlInfo>$(APPVEYOR_REPO_COMMIT) ($(APPVEYOR_REPO_BRANCH))</VersionControlInfo>
+		<BuildNumber>$(APPVEYOR_BUILD_NUMBER)</BuildNumber>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TRAVIS)' == 'true' ">
+		<VersionControlInfo>$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
+		<BuildNumber>$(TRAVIS_BUILD_NUMBER)</BuildNumber>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<SolutionDir>$(MSBuildProjectDirectory)\src\</SolutionDir>
-
-		<VersionControlInfo Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_COMMIT) ($(TRAVIS_BRANCH))</VersionControlInfo>
 		<VersionControlInfo Condition=" '$(VersionControlInfo)' == '' ">(unknown version control revision)</VersionControlInfo>
-
-		<BuildNumber Condition=" '$(TRAVIS)' == 'true' ">$(TRAVIS_BUILD_NUMBER)</BuildNumber>
 		<BuildNumber Condition=" '$(BuildNumber)' == '' ">0</BuildNumber>
-
 		<AssemblyVersion>$(VersionPrefix).$(BuildNumber)</AssemblyVersion>
-
-		<VersionSuffix Condition=" '$(TRAVIS)' == 'true' ">build$(BuildNumber)</VersionSuffix>
-
+		<VersionSuffix>build$(BuildNumber)</VersionSuffix>
 		<PackageVersion>$(VersionPrefix)</PackageVersion>
 		<PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
-
 		<AssemblyInformationalVersion>$(PackageVersion) $(VersionControlInfo)</AssemblyInformationalVersion>
-
-		<TestsEnabled>true</TestsEnabled>
 	</PropertyGroup>
 
 	<ItemGroup>
