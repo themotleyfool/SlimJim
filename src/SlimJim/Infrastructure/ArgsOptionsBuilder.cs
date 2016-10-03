@@ -46,6 +46,8 @@ namespace SlimJim.Infrastructure
 									v => options.VisualStudioVersion = TryParseVersionNumber(v) },
 								{ "n|name=", "alternate {NAME} for solution file", 
 									v => options.SolutionName = v},
+								{ "m|minimal", "skip all afferent assembly references (included by default)",
+									v => options.SkipAfferentAssemblyReferences = true },
 								{ "a|all", "include all efferent assembly references (omitted by default)", 
 									v => options.IncludeEfferentAssemblyReferences = true },
 								{ "h|help", "display the help screen", 

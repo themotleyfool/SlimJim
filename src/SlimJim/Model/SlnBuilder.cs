@@ -58,7 +58,10 @@ namespace SlimJim.Model
 					Log.WarnFormat("Project {0} not found.", targetProjectName);
 				}
 
-				AddAfferentReferencesToProject(rootProject);
+				if (options.SkipAfferentAssemblyReferences == false)
+				{
+					AddAfferentReferencesToProject(rootProject);
+				}
 			}
 		}
 
