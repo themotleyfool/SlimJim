@@ -96,8 +96,9 @@ namespace SlimJim.Infrastructure
 
 		private bool FindImportedNuGetTargets(XElement xml)
 		{
-			var importPaths = (from import in xml.DescendantsAndSelf(Ns + "Import")
-					select import.Attribute("Project").Value);
+            var importPaths = xml.DescendantsAndSelf(Ns + "Import")
+                .Where(i => i.Attribute("Project") != null)
+                .Select(i => i.Attribute("Project").Value);
 			return importPaths.Any(p => p.EndsWith(@"\.nuget\nuget.targets", StringComparison.InvariantCultureIgnoreCase));
 		}
 
