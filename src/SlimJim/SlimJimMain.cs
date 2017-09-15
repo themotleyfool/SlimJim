@@ -1,15 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+
 using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
-using SlimJim.Infrastructure;
-using System;
 
 namespace SlimJim
 {
-	public class SlimJimMain
+    using Infrastructure;
+
+    public class SlimJimMain
 	{
 		public static void Main(string[] args)
 		{

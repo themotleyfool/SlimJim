@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
-using SlimJim.Model;
-using log4net;
+
 
 namespace SlimJim
 {
-	public class ReferenceConverter : CsProjConverter
+    using Model;
+
+    public class ReferenceConverter : CsProjConverter
 	{
 		public void ConvertToProjectReferences(Sln solution)
 		{
@@ -83,11 +84,5 @@ namespace SlimJim
 			doc.Save(project.Path);
 		}
 
-		private static XmlElement CreateElementWithInnerText(XmlDocument doc, string elementName, string text)
-		{
-			var e = doc.CreateElement(elementName, MSBuildXmlNamespace);
-			e.InnerText = text;
-			return e;
-		}
-	}
+    }
 }

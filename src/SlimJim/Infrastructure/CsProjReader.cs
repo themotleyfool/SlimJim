@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using SlimJim.Model;
-using log4net;
 using System.Reflection;
+
+using log4net;
 
 namespace SlimJim.Infrastructure
 {
-	public class CsProjReader
+    using Model;
+
+    public class CsProjReader
 	{
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static readonly XNamespace Ns = "http://schemas.microsoft.com/developer/msbuild/2003";
