@@ -39,7 +39,6 @@ namespace SlimJim.Test.Infrastructure
 
 			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] { "MyProject" }));
 			Assert.That(options.SolutionName, Is.EqualTo("MyProject"));
-
 		}
 
 		[Test]
@@ -48,7 +47,7 @@ namespace SlimJim.Test.Infrastructure
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--target", "MyProject", "--target", "YourProject" }, WorkingDirectory);
 
 			Assert.That(options.TargetProjectNames, Is.EqualTo(new[] { "MyProject", "YourProject" }));
-			Assert.That(options.SolutionName, Is.StringMatching("MyProject_YourProject"));
+			Assert.That(options.SolutionName, Does.Match("MyProject_YourProject"));
 		}
 
 		[Test]
@@ -86,15 +85,47 @@ namespace SlimJim.Test.Infrastructure
 			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2010));
 		}
 
-		[Test]
+        [Test]
+        public void SpecifiedVisualStudioVersion2012()
+        {
+            options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "2012" }, WorkingDirectory);
+
+            Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2012));
+        }
+
+        [Test]
+        public void SpecifiedVisualStudioVersion2013()
+        {
+            options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "2013" }, WorkingDirectory);
+
+            Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2013));
+        }
+
+        [Test]
+        public void SpecifiedVisualStudioVersion2015()
+        {
+            options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "2015" }, WorkingDirectory);
+
+            Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2015));
+        }
+
+        [Test]
+        public void SpecifiedVisualStudioVersion2017()
+        {
+            options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "2017" }, WorkingDirectory);
+
+            Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2017));
+        }
+
+        [Test]
 		public void InvalidVisualStudioVersionNumber()
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--version", "dumb" }, WorkingDirectory);
 
-			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2015));
+			Assert.That(options.VisualStudioVersion, Is.EqualTo(VisualStudioVersion.VS2017));
 		}
 
-		[Test]
+        [Test]
 		public void SpecifiedSolutionName()
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--name", "MyProjects" }, WorkingDirectory);
@@ -106,14 +137,12 @@ namespace SlimJim.Test.Infrastructure
 		public void UnspecifiedSolutionNameWithSingleTargetProject()
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--target", "MyProject" }, WorkingDirectory);
-
 		}
 
 		[Test]
 		public void UnspecifiedSolutionNameWithMultipleTargetProjectsUsesFirstProjectNamePlusSuffix()
 		{
 			options = ArgsOptionsBuilder.BuildOptions(new[] { "--target", "MyProject", "--target", "YourProject" }, WorkingDirectory);
-
 		}
 		
 		[Test]

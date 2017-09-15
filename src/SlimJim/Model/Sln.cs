@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+
 using log4net;
 
 namespace SlimJim.Model
@@ -19,7 +20,7 @@ namespace SlimJim.Model
 			Name = name;
 			Guid = guid;
 			Projects = new List<CsProj>();
-			Version = VisualStudioVersion.VS2010;
+			Version = VisualStudioVersion.VS2017;
 		}
 
 		private readonly IDictionary<string, Folder> folders = new Dictionary<string, Folder>();
