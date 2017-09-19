@@ -107,6 +107,8 @@
     <Content Include="SampleFiles\Sln\ThreeProjects.sln" />
     <Content Include="SampleFiles\Sln\BlankSolution.sln" />
     <Content Include="SampleFiles\Sln\SingleProject.sln" />
+    <Content Include="SampleFiles\Sln\VS2015.sln" />
+    <Content Include="SampleFiles\Sln\VS2017.sln" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
