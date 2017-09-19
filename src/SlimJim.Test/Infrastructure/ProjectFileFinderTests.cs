@@ -50,7 +50,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void IgnoresRelativePath()
 		{
-			finder.IgnorePatterns("Theirs");
+			finder.IgnorePatterns("Their");
 			projectFiles = finder.FindAllProjectFiles(SampleFileSystemPath);
 
 			AssertFilesMatching(new[]
@@ -80,7 +80,7 @@ namespace SlimJim.Test.Infrastructure
 		[Test]
 		public void IgnoresRelativePathWithDifferentCase()
 		{
-			finder.IgnorePatterns("ThEiRs");
+			finder.IgnorePatterns("ThEiR");
 			projectFiles = finder.FindAllProjectFiles(SampleFileSystemPath);
 
 			AssertFilesMatching(new[]

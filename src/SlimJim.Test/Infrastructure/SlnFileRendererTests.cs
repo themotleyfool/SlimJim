@@ -61,17 +61,36 @@ namespace SlimJim.Test.Infrastructure
 			TestRender();
 		}
 
-		private void MakeSolution(string name, params CsProj[] csProjs)
+        [Test]
+        public void VisualStudio2015Solution()
+        {
+            MakeSolution("VS2015");
+            solution.Version = VisualStudioVersion.VS2015;
+
+            TestRender();
+        }
+
+        [Test]
+        public void VisualStudio2017Solution()
+        {
+            MakeSolution("VS2017");
+            solution.Version = VisualStudioVersion.VS2017;
+
+            TestRender();
+        }
+
+        private void MakeSolution(string name, params CsProj[] csProjs)
 		{
 			solution = new Sln(name, "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
+            solution.Version = VisualStudioVersion.VS2010;
 			solution.AddProjects(csProjs);
 		}
 
 		private void TestRender()
 		{
-			renderer = new SlnFileRenderer(solution);
+            renderer = new SlnFileRenderer(solution);
 
-			string actualContents = renderer.Render().Replace("\r\n", "\n").Replace("\n\n", "\n");
+            string actualContents = renderer.Render().Replace("\r\n", "\n").Replace("\n\n", "\n");
 			string expectedContents = SampleFileHelper.GetSlnFileContents(solution.Name).Replace("\r\n", "\n").Replace("\n\n", "\n");
 
 			Assert.That(actualContents, Is.EqualTo(expectedContents));
