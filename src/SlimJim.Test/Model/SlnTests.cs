@@ -9,16 +9,16 @@ namespace SlimJim.Test.Model
 	public class SlnTests
 	{
 		[Test]
-		public void VersionDefaultsTo2010()
+		public void VersionDefaultsTo2017()
 		{
-			Assert.That(new Sln("sln").Version, Is.EqualTo(VisualStudioVersion.VS2010));
+			Assert.That(new Sln("sln").Version, Is.EqualTo(VisualStudioVersion.VS2017));
 		}
 
 		[Test]
 		public void GuidFormatIncludesCurlyBraces()
 		{
-			Assert.That(new Sln("sample").Guid, Is.StringStarting("{"));
-			Assert.That(new Sln("sample").Guid, Is.StringEnding("}"));
+			Assert.That(new Sln("sample").Guid, Does.StartWith("{"));
+			Assert.That(new Sln("sample").Guid, Does.EndWith("}"));
 		}
 
 		[Test]

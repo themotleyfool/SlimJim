@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.XPath;
-using SlimJim.Model;
 
 namespace SlimJim
 {
-	public class HintPathConverter : CsProjConverter
+    using Model;
+
+    public class HintPathConverter : CsProjConverter
 	{
 		private const string NuGetPackagesDirectoryName = @"packages\";
 		private enum Mode { Convert, Restore }

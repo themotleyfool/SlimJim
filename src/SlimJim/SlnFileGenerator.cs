@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using log4net;
-using SlimJim.Infrastructure;
-using SlimJim.Model;
 
 namespace SlimJim
 {
-	public class SlnFileGenerator
+    using Infrastructure;
+    using Model;
+
+    public class SlnFileGenerator
 	{
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SlnFileGenerator));
 		public CsProjRepository ProjectRepository { get; set; }

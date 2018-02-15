@@ -25,9 +25,9 @@ namespace SlimJim.Infrastructure
 			this.solution = solution;
 		}
 
-		public string Render()
-		{
-			var slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
+        public string Render()
+        {
+            var slnTemplate = templateGroup.GetInstanceOf("SolutionTemplate");
 			slnTemplate.SetAttribute("sln", solution);
 			return slnTemplate.ToString();
 		}

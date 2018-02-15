@@ -1,13 +1,15 @@
-using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
 using Rhino.Mocks;
-using SlimJim.Infrastructure;
-using SlimJim.Model;
+
 
 namespace SlimJim.Test
 {
-	[TestFixture]
+    using SlimJim.Infrastructure;
+    using SlimJim.Model;
+
+    [TestFixture]
 	public class SlnFileGeneratorTests : TestBase
 	{
 		private const string TargetProject = "MyProject";

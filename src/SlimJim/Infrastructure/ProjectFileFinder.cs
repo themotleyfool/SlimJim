@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
 using log4net;
+
 
 namespace SlimJim.Infrastructure
 {
@@ -12,7 +15,10 @@ namespace SlimJim.Infrastructure
 		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 		private readonly List<Regex> ignorePatterns;
 
-		public ProjectFileFinder()
+        private string[] _supportedExtensions = new[] { ".csproj", ".vbproj" };
+
+
+        public ProjectFileFinder()
 		{
 			ignorePatterns = new List<Regex>();
 			IgnorePatterns(@"^\.svn$", @"^\.hg$", @"^\.git$", "^bin$", "^obj$", "ReSharper");
@@ -20,12 +26,12 @@ namespace SlimJim.Infrastructure
 
 		public virtual List<FileInfo> FindAllProjectFiles(string startPath)
 		{
-			Log.InfoFormat("Searching for .csproj files at {0}", startPath);
+			Log.InfoFormat($"Searching for '{string.Join(",", _supportedExtensions)}' files at '{startPath}'.");
 
 			var root = new DirectoryInfo(startPath);
 			var projectFiles = GetProjectFiles(root);
 
-			return projectFiles;
+            return projectFiles;
 		}
 
 		private List<FileInfo> GetProjectFiles(DirectoryInfo directory)
@@ -42,19 +48,19 @@ namespace SlimJim.Infrastructure
 
 		private void SearchDirectoryForProjects(DirectoryInfo directory, List<FileInfo> files)
 		{
-			FileInfo[] projects = directory
-									.GetFiles("*.csproj")
-									.Where(f => !PathIsIgnored(f.Name))
+            FileInfo[] projects = directory
+                                    .GetFiles("*.*", SearchOption.AllDirectories)
+                                    .Where(f => _supportedExtensions.Contains(f.Extension, StringComparer.OrdinalIgnoreCase))
+                                    .Where(f => !PathIsIgnored(f.Name))
 									.ToArray();
-
-			if (projects.Length > 0)
+            if (projects.Length > 0)
 			{
 				AddProjectFile(projects, files);
 			}
-			else
-			{
-				RecurseChildDirectories(directory, files);
-			}
+            else
+            {
+                RecurseChildDirectories(directory, files);
+            }
 		}
 
 		private void RecurseChildDirectories(DirectoryInfo directory, List<FileInfo> files)
